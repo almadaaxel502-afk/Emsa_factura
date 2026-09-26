@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="root" prefHeight="600.0" prefWidth="800.0"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ar.com.itec1misiones.emsa.view.controller.InicioController">
+  <top>
+    <MenuBar>
+      <menus>
+        <Menu mnemonicParsing="false" text="EMSA">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Facturación" onAction="#mostrarFacturacion" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+  </top>
+</BorderPane>

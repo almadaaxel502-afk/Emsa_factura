@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="TOP_LEFT" spacing="12.0" prefWidth="780.0" prefHeight="560.0"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ar.com.itec1misiones.emsa.view.controller.FacturacionViewController">
+  <padding>
+    <Insets top="16" right="16" bottom="16" left="16"/>
+  </padding>
+
+  <Label text="Liquidar factura" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+  <HBox spacing="10.0" alignment="CENTER_LEFT">
+    <Label text="Usuario:" />
+    <ComboBox fx:id="usuarioCombo" prefWidth="260.0" />
+    <Label text="kWh:" />
+    <TextField fx:id="kwhField" promptText="Ej: 40" prefWidth="100.0" />
+    <Button text="Liquidar" onAction="#onLiquidar" defaultButton="true" />
+  </HBox>
+
+  <Label fx:id="mensajeLabel" textFill="#1b5e20" wrapText="true" />
+
+  <Label text="Facturas emitidas" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+  <TableView fx:id="facturasTable" VBox.vgrow="ALWAYS">
+    <columns>
+      <TableColumn fx:id="colId" text="ID" prefWidth="60.0" />
+      <TableColumn fx:id="colUsuario" text="Usuario" prefWidth="120.0" />
+      <TableColumn fx:id="colKwh" text="kWh" prefWidth="120.0" />
+      <TableColumn fx:id="colTotal" text="Total $" prefWidth="140.0" />
+    </columns>
+  </TableView>
+</VBox>
