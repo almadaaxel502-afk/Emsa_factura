@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="itec.emsa.emsa.view.controller.ClientesController"
+            styleClass="root-pane">
+
+    <!-- Barra superior -->
+    <top>
+        <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="10">
+            <padding><Insets top="12" right="20" bottom="12" left="20"/></padding>
+            <Button text="← Volver" onAction="#onVolver" styleClass="btn-secondary"/>
+            <Label text="EMSA  /  Clientes" styleClass="navbar-title"/>
+        </HBox>
+    </top>
+
+    <center>
+        <SplitPane dividerPositions="0.55">
+
+            <!-- Panel izquierdo: tabla -->
+            <VBox spacing="8">
+                <padding><Insets top="16" right="12" bottom="16" left="16"/></padding>
+
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <TextField fx:id="campoBusqueda" promptText="Buscar por nombre o email..."
+                               HBox.hgrow="ALWAYS"/>
+                    <Button text="Buscar" onAction="#onBuscar" styleClass="btn-primary"/>
+                </HBox>
+
+                <TableView fx:id="tablaClientes" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colId"      text="ID"      prefWidth="50"/>
+                        <TableColumn fx:id="colNombre"  text="Nombre"  prefWidth="180"/>
+                        <TableColumn fx:id="colEmail"   text="Email"   prefWidth="200"/>
+                        <TableColumn fx:id="colMetros"  text="Medidores" prefWidth="90"/>
+                    </columns>
+                    <placeholder><Label text="No hay clientes registrados"/></placeholder>
+                </TableView>
+
+                <HBox spacing="8">
+                    <Button text="Eliminar" onAction="#onEliminar" styleClass="btn-danger"/>
+                </HBox>
+            </VBox>
+
+            <!-- Panel derecho: formulario -->
+            <VBox spacing="14">
+                <padding><Insets top="16" right="16" bottom="16" left="12"/></padding>
+
+                <Label text="Datos del cliente" styleClass="form-title"/>
+
+                <Label text="Nombre"/>
+                <TextField fx:id="campoNombre" promptText="Nombre completo"
+                           styleClass="input-field"/>
+
+                <Label text="Email"/>
+                <TextField fx:id="campoEmail" promptText="correo@ejemplo.com"
+                           styleClass="input-field"/>
+
+                <Label fx:id="lblEstado" wrapText="true"/>
+
+                <HBox spacing="8">
+                    <Button fx:id="btnNuevo"   text="Nuevo"   onAction="#onNuevo"
+                            styleClass="btn-secondary"/>
+                    <Button fx:id="btnGuardar" text="Guardar" onAction="#onGuardar"
+                            styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                </HBox>
+            </VBox>
+
+        </SplitPane>
+    </center>
+</BorderPane>

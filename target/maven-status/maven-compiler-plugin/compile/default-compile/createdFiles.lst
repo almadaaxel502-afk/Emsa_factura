@@ -1,0 +1,5 @@
+itec\emsa\emsa\service\ClientService.class
+itec\emsa\emsa\controller\ClientController.class
+itec\emsa\emsa\repository\ClientRepository.class
+itec\emsa\emsa\entity\Client.class
+itec\emsa\emsa\EmsaApplication.class

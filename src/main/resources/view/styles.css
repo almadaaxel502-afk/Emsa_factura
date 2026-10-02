@@ -1,0 +1,160 @@
+/* ===========================
+   BASE
+   =========================== */
+.root {
+    -fx-background-color: #f0f4f8;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-font-size: 13px;
+}
+
+/* ===========================
+   NAVBAR
+   =========================== */
+.navbar {
+    -fx-background-color: #2c3e50;
+    -fx-padding: 10 20 10 20;
+}
+.navbar-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+.navbar-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #bdc3c7;
+}
+.navbar-user {
+    -fx-font-size: 13px;
+    -fx-text-fill: #ecf0f1;
+}
+
+/* ===========================
+   PANTALLA MENÚ
+   =========================== */
+.menu-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 0 0 10 0;
+}
+.menu-btn {
+    -fx-background-color: #2980b9;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-pref-height: 55px;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+.menu-btn:hover {
+    -fx-background-color: #3498db;
+}
+
+/* ===========================
+   FORMULARIOS
+   =========================== */
+.form-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+.input-field {
+    -fx-pref-height: 36px;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 0 8 0 8;
+}
+.input-field:focused {
+    -fx-border-color: #3498db;
+    -fx-border-width: 2;
+}
+
+/* ===========================
+   BOTONES
+   =========================== */
+.btn-primary {
+    -fx-background-color: #2980b9;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-pref-height: 36px;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+.btn-primary:hover  { -fx-background-color: #3498db; }
+.btn-primary:pressed { -fx-background-color: #1a6fa0; }
+
+.btn-secondary {
+    -fx-background-color: #7f8c8d;
+    -fx-text-fill: white;
+    -fx-pref-height: 36px;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+.btn-secondary:hover { -fx-background-color: #95a5a6; }
+
+.btn-danger {
+    -fx-background-color: #c0392b;
+    -fx-text-fill: white;
+    -fx-pref-height: 36px;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+.btn-danger:hover { -fx-background-color: #e74c3c; }
+
+/* ===========================
+   LOGIN
+   =========================== */
+.login-container {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 4);
+}
+.title-label {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+.subtitle-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #7f8c8d;
+}
+.field-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e;
+}
+.error-label {
+    -fx-text-fill: #e74c3c;
+    -fx-font-size: 13px;
+}
+.login-button {
+    -fx-background-color: #2980b9;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-pref-height: 42px;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+.login-button:hover   { -fx-background-color: #3498db; }
+.login-button:pressed { -fx-background-color: #1a6fa0; }
+.login-button:disabled { -fx-background-color: #95a5a6; }
+
+/* ===========================
+   TABLA
+   =========================== */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #dde3ea;
+}
+.table-view .column-header {
+    -fx-background-color: #34495e;
+    -fx-text-fill: white;
+}
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+.table-row-cell:selected {
+    -fx-background-color: #d6eaf8;
+}
