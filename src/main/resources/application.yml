@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    # MySQL via Docker (ver docker-compose.yml). Para usar H2 integrada,
+    # comentar este bloque y descomentar el de abajo.
+    url: jdbc:mysql://localhost:3307/emsa?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: root
+    #url: jdbc:h2:file:./data/emsa;MODE=MySQL;DATABASE_TO_LOWER=TRUE
+    #driver-class-name: org.h2.Driver
+    #username: sa
+    #password:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update

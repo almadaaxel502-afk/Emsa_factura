@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.3
+    container_name: emsa-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: emsa
+      MYSQL_USER: emsa
+      MYSQL_PASSWORD: emsa
+      TZ: 'America/Argentina/Buenos_Aires'
+    ports:
+      - "3307:3306"
+    volumes:
+      - emsa_mysql_data:/var/lib/mysql
+    networks:
+      - emsa-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 5s
+      retries: 10
+
+volumes:
+  emsa_mysql_data:
+    driver: local
+
+networks:
+  emsa-network:
+    driver: bridge

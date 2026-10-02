@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="18.0" prefWidth="420.0" prefHeight="340.0"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ar.com.itec1misiones.emsa.view.controller.LoginController">
+  <padding>
+    <Insets top="30" right="30" bottom="30" left="30"/>
+  </padding>
+
+  <Label text="EMSA" style="-fx-font-size: 26px; -fx-font-weight: bold;" />
+  <Label text="Ingrese a facturación" style="-fx-font-size: 15px;" />
+
+  <GridPane hgap="10" vgap="12">
+    <Label text="Usuario:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <TextField fx:id="usuarioField" promptText="Nombre de usuario" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+    <Label text="Contraseña:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <PasswordField fx:id="passwordField" promptText="Contraseña" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+  </GridPane>
+
+  <Button text="Ingresar" onAction="#onLogin" defaultButton="true" prefWidth="160.0"/>
+
+  <Label fx:id="mensajeLabel" textFill="#d32f2f" wrapText="true" maxWidth="320.0" alignment="CENTER"/>
+</VBox>
