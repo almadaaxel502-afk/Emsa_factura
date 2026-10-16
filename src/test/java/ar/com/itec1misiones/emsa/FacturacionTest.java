@@ -25,5 +25,31 @@ public class FacturacionTest {
     i.setDescripcion("IVA"); i.setPrecio(new BigDecimal("21"));
     assertEquals("IVA", i.getDescripcion());
   }
+  @Test void tarifaPrimerBloque() {
+    // 20 kWh -> 20 * 256
+    assertEquals(0, new BigDecimal("5120.00").compareTo(
+        ar.com.itec1misiones.emsa.service.impl.FacturacionServiceImpl.calcularTotal(
+            20, new BigDecimal("256"), new BigDecimal("79"))));
+  }
+  @Test void tarifaDosBloques() {
+    // 40 kWh -> 30*256 + 10*79 = 7680 + 790 = 8470
+    assertEquals(0, new BigDecimal("8470.00").compareTo(
+        ar.com.itec1misiones.emsa.service.impl.FacturacionServiceImpl.calcularTotal(
+            40, new BigDecimal("256"), new BigDecimal("79"))));
+  }
+  @Test void tarifaConExcedente() {
+    // 130 kWh -> 30*256 + 90*79 + 10*79 = 7680 + 7110 + 790 = 15580
+    assertEquals(0, new BigDecimal("15580.00").compareTo(
+        ar.com.itec1misiones.emsa.service.impl.FacturacionServiceImpl.calcularTotal(
+            130, new BigDecimal("256"), new BigDecimal("79"))));
+  }
+  @Test void tarifaCeroYNegativo() {
+    assertEquals(0, BigDecimal.ZERO.setScale(2).compareTo(
+        ar.com.itec1misiones.emsa.service.impl.FacturacionServiceImpl.calcularTotal(
+            0, new BigDecimal("256"), new BigDecimal("79"))));
+    assertThrows(IllegalArgumentException.class, () ->
+        ar.com.itec1misiones.emsa.service.impl.FacturacionServiceImpl.calcularTotal(
+            -5, new BigDecimal("256"), new BigDecimal("79")));
+  }
 }
 
