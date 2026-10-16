@@ -26,12 +26,15 @@ public class LiquidacionIT {
                 .orElseThrow(() -> new IllegalStateException("Sin clientes semilla"));
         long antes = consumos.count();
         FacturaDTO f = facturacion.liquidar(c.getIdCliente(), 40);
-        assertEquals(8470.0, f.getTotal(), 0.001);
+        // subtotal 8470 (30x256 + 10x79) + IVA 21% (1778.70) = 10248.70
+        assertEquals(10248.70, f.getTotal(), 0.001);
         assertEquals(40.0, f.getKwhTotales(), 0.001);
         assertEquals(antes + 1, consumos.count());
-        assertEquals(2, consumos.findAll().stream()
+        var guardado = consumos.findAll().stream()
                 .filter(x -> x.getIdConsumo().equals(f.getId().longValue()))
-                .findFirst().orElseThrow().getLineasConsumo().size());
+                .findFirst().orElseThrow();
+        assertEquals(2, guardado.getLineasConsumo().size());
+        assertEquals(1, guardado.getLineasImpuesto().size());
         assertTrue(facturacion.findAll().size() >= 1);
     }
 }

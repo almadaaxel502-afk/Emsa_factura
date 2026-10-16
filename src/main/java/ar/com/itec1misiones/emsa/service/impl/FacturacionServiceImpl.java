@@ -3,11 +3,14 @@ package ar.com.itec1misiones.emsa.service.impl;
 import ar.com.itec1misiones.emsa.dto.FacturaDTO;
 import ar.com.itec1misiones.emsa.entity.Cliente;
 import ar.com.itec1misiones.emsa.entity.ConsumoFactura;
+import ar.com.itec1misiones.emsa.entity.Impuesto;
 import ar.com.itec1misiones.emsa.entity.LineaConsumo;
+import ar.com.itec1misiones.emsa.entity.LineaImpuesto;
 import ar.com.itec1misiones.emsa.entity.Medidor;
 import ar.com.itec1misiones.emsa.entity.TipoCarga;
 import ar.com.itec1misiones.emsa.repository.ClienteRepository;
 import ar.com.itec1misiones.emsa.repository.ConsumoFacturaRepository;
+import ar.com.itec1misiones.emsa.repository.ImpuestoRepository;
 import ar.com.itec1misiones.emsa.repository.TipoCargaRepository;
 import ar.com.itec1misiones.emsa.service.FacturacionService;
 import org.springframework.stereotype.Service;
@@ -39,12 +42,14 @@ public class FacturacionServiceImpl implements FacturacionService {
     private final ClienteRepository clientes;
     private final ConsumoFacturaRepository consumos;
     private final TipoCargaRepository tiposCarga;
+    private final ImpuestoRepository impuestos;
 
     public FacturacionServiceImpl(ClienteRepository clientes, ConsumoFacturaRepository consumos,
-                                  TipoCargaRepository tiposCarga) {
+                                  TipoCargaRepository tiposCarga, ImpuestoRepository impuestos) {
         this.clientes = clientes;
         this.consumos = consumos;
         this.tiposCarga = tiposCarga;
+        this.impuestos = impuestos;
     }
 
     /** Matemática pura de bloques, testeable sin Spring. Devuelve {kwhB1, kwhB2, kwhExc}. */
@@ -64,6 +69,19 @@ public class FacturacionServiceImpl implements FacturacionService {
                 .add(BigDecimal.valueOf(b[1]).multiply(precioB2))
                 .add(BigDecimal.valueOf(b[2]).multiply(precioB2))
                 .setScale(2, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * Suma impuestos al subtotal. Cada alícuota se interpreta como porcentaje
+     * (ej. IVA 21 -> subtotal * 21 / 100). Devuelve el total.
+     */
+    public static BigDecimal aplicarImpuestos(BigDecimal subtotal, List<BigDecimal> alicuotas) {
+        BigDecimal total = subtotal;
+        for (BigDecimal alicuota : alicuotas) {
+            total = total.add(subtotal.multiply(alicuota)
+                    .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP));
+        }
+        return total.setScale(2, RoundingMode.HALF_UP);
     }
 
     @Override
@@ -94,7 +112,23 @@ public class FacturacionServiceImpl implements FacturacionService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                 .setScale(2, RoundingMode.HALF_UP);
         consumo.setSubtotal(subtotal);
-        consumo.setTotal(subtotal);
+        // Impuestos del diagrama: una LineaImpuesto por cada Impuesto (alícuota % sobre subtotal)
+        List<BigDecimal> alicuotas = new ArrayList<>();
+        for (Impuesto impuesto : impuestos.findAll()) {
+            if (impuesto.getPrecio() == null) {
+                continue;
+            }
+            BigDecimal monto = subtotal.multiply(impuesto.getPrecio())
+                    .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+            LineaImpuesto li = new LineaImpuesto();
+            li.setCantidad(BigDecimal.ONE);
+            li.setPrecio(monto);
+            li.setImpuesto(impuesto);
+            li.setConsumoFactura(consumo);
+            consumo.getLineasImpuesto().add(li);
+            alicuotas.add(impuesto.getPrecio());
+        }
+        consumo.setTotal(aplicarImpuestos(subtotal, alicuotas));
         consumos.save(consumo);
         return aDTO(consumo, cliente, kwhTotales);
     }

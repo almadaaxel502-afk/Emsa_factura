@@ -1,7 +1,9 @@
 package ar.com.itec1misiones.emsa;
 import ar.com.itec1misiones.emsa.entity.*;
+import ar.com.itec1misiones.emsa.service.impl.FacturacionServiceImpl;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 public class FacturacionTest {
   @Test void composicionCliente() {
@@ -43,13 +45,23 @@ public class FacturacionTest {
         ar.com.itec1misiones.emsa.service.impl.FacturacionServiceImpl.calcularTotal(
             130, new BigDecimal("256"), new BigDecimal("79"))));
   }
-  @Test void tarifaCeroYNegativo() {
-    assertEquals(0, BigDecimal.ZERO.setScale(2).compareTo(
+  @Test void tarifaCeroYNegativo() {    assertEquals(0, BigDecimal.ZERO.setScale(2).compareTo(
         ar.com.itec1misiones.emsa.service.impl.FacturacionServiceImpl.calcularTotal(
             0, new BigDecimal("256"), new BigDecimal("79"))));
     assertThrows(IllegalArgumentException.class, () ->
         ar.com.itec1misiones.emsa.service.impl.FacturacionServiceImpl.calcularTotal(
             -5, new BigDecimal("256"), new BigDecimal("79")));
+  }
+  @Test void impuestoIvaSobreSubtotal() {
+    // 8470 + IVA 21% (1778.70) = 10248.70
+    assertEquals(0, new BigDecimal("10248.70").compareTo(
+        FacturacionServiceImpl.aplicarImpuestos(
+            new BigDecimal("8470.00"), List.of(new BigDecimal("21")))));
+  }
+  @Test void sinImpuestosTotalEsSubtotal() {
+    assertEquals(0, new BigDecimal("8470.00").compareTo(
+        FacturacionServiceImpl.aplicarImpuestos(
+            new BigDecimal("8470.00"), List.of())));
   }
 }
 

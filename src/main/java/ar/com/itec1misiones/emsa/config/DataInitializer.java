@@ -11,12 +11,13 @@ public class DataInitializer implements CommandLineRunner {
   private final ClienteRepository clientes;
   private final TipoAccesoRepository tiposAcceso;
   private final TipoCargaRepository tiposCarga;
+  private final ImpuestoRepository impuestos;
   public DataInitializer(UsuarioRepository usuarios, ZonaRepository zonas,
                          ClienteRepository clientes, TipoAccesoRepository tiposAcceso,
-                         TipoCargaRepository tiposCarga) {
+                         TipoCargaRepository tiposCarga, ImpuestoRepository impuestos) {
     this.usuarios = usuarios; this.zonas = zonas;
     this.clientes = clientes; this.tiposAcceso = tiposAcceso;
-    this.tiposCarga = tiposCarga;
+    this.tiposCarga = tiposCarga; this.impuestos = impuestos;
   }
   @Transactional
   public void run(String... args) {
@@ -40,6 +41,8 @@ public class DataInitializer implements CommandLineRunner {
     sembrarTipoCarga("Primeros 30 kWh", "256");
     sembrarTipoCarga("Siguientes 90 kWh", "79");
     sembrarTipoCarga("Excedente", "79");
+    // Impuestos de la factura (alícuota % sobre el subtotal)
+    sembrarImpuesto("IVA", "21");
   }
 
   private void sembrarTipoCarga(String descripcion, String precio) {
@@ -50,6 +53,17 @@ public class DataInitializer implements CommandLineRunner {
       t.setDescripcion(descripcion);
       t.setPrecio(new java.math.BigDecimal(precio));
       tiposCarga.save(t);
+    }
+  }
+
+  private void sembrarImpuesto(String descripcion, String alicuota) {
+    boolean existe = impuestos.findAll().stream()
+        .anyMatch(i -> descripcion.equalsIgnoreCase(i.getDescripcion()));
+    if (!existe) {
+      Impuesto i = new Impuesto();
+      i.setDescripcion(descripcion);
+      i.setPrecio(new java.math.BigDecimal(alicuota));
+      impuestos.save(i);
     }
   }
 }
