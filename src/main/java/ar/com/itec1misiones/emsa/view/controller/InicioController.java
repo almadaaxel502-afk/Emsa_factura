@@ -29,6 +29,11 @@ public class InicioController {
         cargarCentro("/view/facturacion.fxml");
     }
 
+    @FXML
+    public void mostrarUsuarios() {
+        cargarCentro("/view/usuarios.fxml");
+    }
+
     private void cargarCentro(String fxml) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));

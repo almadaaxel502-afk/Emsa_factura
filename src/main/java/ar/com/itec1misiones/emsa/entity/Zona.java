@@ -1,4 +1,11 @@
 package ar.com.itec1misiones.emsa.entity;
-public enum Zona {
-    ZONA_01, ZONA_006, ZONA_008, ZONA_256_260, ZONA_259_333, ZONA_259_037;
+import jakarta.persistence.*;
+import lombok.*;
+
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Entity @Table(name = "zonas")
+public class Zona {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idZona;
+    private String nombre;
 }

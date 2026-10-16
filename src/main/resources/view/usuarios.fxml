@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="TOP_LEFT" spacing="12.0" prefWidth="780.0" prefHeight="560.0"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ar.com.itec1misiones.emsa.view.controller.UsuarioViewController">
+  <padding>
+    <Insets top="16" right="16" bottom="16" left="16"/>
+  </padding>
+
+  <Label text="Gestión de usuarios" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+  <HBox spacing="10.0" alignment="CENTER_LEFT">
+    <Label text="Nombre:" />
+    <TextField fx:id="nombreField" promptText="Nombre de usuario" prefWidth="260.0" />
+    <Button text="Nuevo" onAction="#onNuevo" />
+    <Button text="Guardar" onAction="#onGuardar" defaultButton="true" />
+    <Button text="Eliminar" onAction="#onEliminar" />
+  </HBox>
+
+  <Label fx:id="mensajeLabel" textFill="#1b5e20" wrapText="true" />
+
+  <Label text="Usuarios registrados" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+  <TableView fx:id="usuariosTable" VBox.vgrow="ALWAYS">
+    <columns>
+      <TableColumn fx:id="colId" text="ID" prefWidth="80.0" />
+      <TableColumn fx:id="colNombre" text="Nombre" prefWidth="260.0" />
+    </columns>
+  </TableView>
+</VBox>

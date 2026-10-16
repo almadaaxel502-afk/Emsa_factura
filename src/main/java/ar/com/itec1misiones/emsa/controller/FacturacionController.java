@@ -6,11 +6,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/facturas")
 public class FacturacionController {
-    private final FacturacionService service;
-    public FacturacionController(FacturacionService service) { this.service = service; }
-    @GetMapping public List<FacturaDTO> all() { return service.findAll(); }
-    @GetMapping("/{id}") public FacturaDTO one(@PathVariable Integer id) { return service.findOne(id); }
-    @PostMapping("/liquidar") public FacturaDTO liquidar(@RequestParam Integer usuarioId, @RequestParam double kwh) {
-        return service.liquidar(usuarioId, kwh);
-    }
+  private final FacturacionService service;
+  public FacturacionController(FacturacionService service) { this.service = service; }
+  @GetMapping public List<FacturaDTO> all() { return service.findAll(); }
+  @PostMapping("/liquidar") public FacturaDTO liquidar(@RequestParam Long clienteId, @RequestParam double kwh) { return service.liquidar(clienteId, kwh); }
 }
+

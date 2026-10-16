@@ -16,7 +16,7 @@
 
   <HBox spacing="10.0" alignment="CENTER_LEFT">
     <Label text="Usuario:" />
-    <ComboBox fx:id="usuarioCombo" prefWidth="260.0" />
+    <ComboBox fx:id="clienteCombo" prefWidth="260.0" />
     <Label text="kWh:" />
     <TextField fx:id="kwhField" promptText="Ej: 40" prefWidth="100.0" />
     <Button text="Liquidar" onAction="#onLiquidar" defaultButton="true" />

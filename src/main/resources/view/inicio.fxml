@@ -13,6 +13,7 @@
         <Menu mnemonicParsing="false" text="EMSA">
           <items>
             <MenuItem mnemonicParsing="false" text="Facturación" onAction="#mostrarFacturacion" />
+            <MenuItem mnemonicParsing="false" text="Usuarios" onAction="#mostrarUsuarios" />
           </items>
         </Menu>
       </menus>
