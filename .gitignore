@@ -1,0 +1,25 @@
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.DS_Store
+
+# Build
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# JDK distributions
+**/oracleJdk-*
+**/jdk-*
+
+# Maven
+.m2/
+dependency-reduced-pom.xml
+
+# Environment
+.env
+*.log
