@@ -25,8 +25,8 @@ public class Cliente {
 
     private String direccion;
 
-    // COMPOSICION: Cliente es el todo del Tipo de IVA
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    // COMPOSICION: Cliente es el todo del Tipo de IVA (el tipo es un catalogo compartido)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "id_tipo_iva")
     private TipoIVA tipoIVA;
 

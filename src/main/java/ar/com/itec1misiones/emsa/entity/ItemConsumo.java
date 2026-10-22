@@ -19,8 +19,8 @@ public class ItemConsumo {
     /** Cantidad de kWh del bloque (ej. 30 para el primer bloque). */
     private BigDecimal cantidad;
 
-    // COMPOSICION: el item de consumo es el todo de la Tarifa
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    // COMPOSICION: el item de consumo es el todo de la Tarifa (tarifa de catalogo)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "id_tarifa")
     private Tarifa tarifa;
 

@@ -20,8 +20,8 @@ public class ItemImpuesto {
     /** Tasa de impuesto aplicada (en porcentaje). */
     private BigDecimal tasaImpuesto;
 
-    // COMPOSICION: el item de impuesto es el todo del Impuesto
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    // COMPOSICION: el item de impuesto es el todo del Impuesto (impuesto de catalogo)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "id_impuesto")
     private Impuesto impuesto;
 

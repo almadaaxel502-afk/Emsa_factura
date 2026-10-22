@@ -23,13 +23,13 @@ public class Medidor {
 
     private String direccion;
 
-    // COMPOSICION: Medidor es el todo
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    // COMPOSICION: Medidor es el todo (una zona/categoria puede estar en varios medidores)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "id_zona")
     private Zona zona;
 
-    // COMPOSICION: Medidor es el todo
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    // COMPOSICION: Medidor es el todo (una zona/categoria puede estar en varios medidores)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
 
