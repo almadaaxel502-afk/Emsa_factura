@@ -19,13 +19,13 @@ public class DdlFreshDbIT {
     JdbcTemplate jdbc;
 
     @Test
-    void creaLas12TablasAutomaticamente() {
+    void creaLas13TablasAutomaticamente() {
         List<String> tablas = jdbc.queryForList(
                 "SELECT table_name FROM information_schema.tables WHERE table_schema = 'emsa_fresh'",
                 String.class);
-        for (String esperada : List.of("usuarios", "tipos_acceso", "clientes", "zonas",
-                "categorias", "medidores", "dispositivos", "tipos_carga", "lineas_consumo",
-                "consumos_factura", "lineas_impuesto", "impuestos")) {
+        for (String esperada : List.of("usuarios", "tipos_iva", "clientes", "zonas",
+                "categorias", "medidores", "dispositivos", "tarifas", "facturas",
+                "items_consumo", "items_impuesto", "impuestos", "lecturas")) {
             assertTrue(tablas.contains(esperada), "Falta tabla: " + esperada);
         }
     }

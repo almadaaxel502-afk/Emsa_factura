@@ -15,6 +15,7 @@ public class UsuarioViewController {
     @FXML private TableColumn<Usuario, Long> colId;
     @FXML private TableColumn<Usuario, String> colNombre;
     @FXML private TextField nombreField;
+    @FXML private PasswordField contrasenaField;
     @FXML private Label mensajeLabel;
 
     private final UsuarioService usuarioService;
@@ -31,6 +32,7 @@ public class UsuarioViewController {
                 (obs, anterior, actual) -> {
                     if (actual != null) {
                         nombreField.setText(actual.getNombre());
+                        contrasenaField.clear();
                         mensajeLabel.setText("");
                     }
                 });
@@ -41,6 +43,7 @@ public class UsuarioViewController {
     public void onNuevo() {
         usuariosTable.getSelectionModel().clearSelection();
         nombreField.clear();
+        contrasenaField.clear();
         mensajeLabel.setText("");
         nombreField.requestFocus();
     }
@@ -50,10 +53,11 @@ public class UsuarioViewController {
         try {
             Usuario seleccionado = usuariosTable.getSelectionModel().getSelectedItem();
             if (seleccionado == null) {
-                usuarioService.create(nombreField.getText());
+                usuarioService.create(nombreField.getText(), contrasenaField.getText());
                 mensajeLabel.setText("Usuario creado.");
             } else {
-                usuarioService.update(seleccionado.getIdUsuario(), nombreField.getText());
+                usuarioService.update(seleccionado.getIdUsuario(), nombreField.getText(),
+                        contrasenaField.getText());
                 mensajeLabel.setText("Usuario actualizado.");
             }
             onNuevo();

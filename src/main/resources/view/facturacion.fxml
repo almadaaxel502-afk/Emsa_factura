@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="TOP_LEFT" spacing="12.0" prefWidth="780.0" prefHeight="560.0"
+<VBox alignment="TOP_LEFT" spacing="10.0" prefWidth="860.0" prefHeight="720.0"
       xmlns="http://javafx.com/javafx/17.0.12"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="ar.com.itec1misiones.emsa.view.controller.FacturacionViewController">
@@ -15,22 +15,76 @@
   <Label text="Liquidar factura" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
   <HBox spacing="10.0" alignment="CENTER_LEFT">
-    <Label text="Usuario:" />
-    <ComboBox fx:id="clienteCombo" prefWidth="260.0" />
-    <Label text="kWh:" />
-    <TextField fx:id="kwhField" promptText="Ej: 40" prefWidth="100.0" />
-    <Button text="Liquidar" onAction="#onLiquidar" defaultButton="true" />
+    <Label text="Cliente:" />
+    <ComboBox fx:id="clienteCombo" prefWidth="240.0" />
+    <Label text="N° serie medidor:" />
+    <TextField fx:id="nroSerieField" promptText="Ej: SER-0001" prefWidth="140.0" />
+    <Button text="Buscar por serie" onAction="#onBuscarPorSerie" />
+    <Label text="Medidor:" />
+    <ComboBox fx:id="medidorCombo" prefWidth="140.0" />
   </HBox>
+
+  <Label fx:id="clienteLabel" textFill="#37474f" wrapText="true" />
+
+  <HBox spacing="10.0" alignment="CENTER_LEFT">
+    <Label text="Lectura actual (kWh):" />
+    <TextField fx:id="lecturaField" promptText="Ej: 1290" prefWidth="120.0" />
+    <Label text="Fecha:" />
+    <DatePicker fx:id="fechaPicker" prefWidth="140.0" />
+    <Button text="Registrar lectura" onAction="#onRegistrarLectura" />
+    <Button text="Liquidar periodo" onAction="#onLiquidar" defaultButton="true" />
+  </HBox>
+
+  <GridPane hgap="10.0" vgap="4.0">
+    <Label text="Última lectura:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <Label fx:id="lecturaActualLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+    <Label text="Lectura anterior:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <Label fx:id="lecturaAnteriorLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    <Label text="kWh del periodo:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+    <Label fx:id="kwhPeriodoLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    <Label text="IVA:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+    <Label fx:id="ivaLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+    <Label text="Total:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+    <Label fx:id="totalLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+  </GridPane>
 
   <Label fx:id="mensajeLabel" textFill="#1b5e20" wrapText="true" />
 
-  <Label text="Facturas emitidas" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
-  <TableView fx:id="facturasTable" VBox.vgrow="ALWAYS">
-    <columns>
-      <TableColumn fx:id="colId" text="ID" prefWidth="60.0" />
-      <TableColumn fx:id="colUsuario" text="Usuario" prefWidth="120.0" />
-      <TableColumn fx:id="colKwh" text="kWh" prefWidth="120.0" />
-      <TableColumn fx:id="colTotal" text="Total $" prefWidth="140.0" />
-    </columns>
-  </TableView>
+  <HBox spacing="12.0" VBox.vgrow="ALWAYS">
+    <VBox spacing="6.0" prefWidth="430.0">
+      <Label text="Detalle de consumo" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+      <TableView fx:id="detalleTable">
+        <columns>
+          <TableColumn fx:id="colTarifa" text="Tarifa" prefWidth="180.0" />
+          <TableColumn fx:id="colCantidad" text="kWh" prefWidth="80.0" />
+          <TableColumn fx:id="colPrecio" text="Precio" prefWidth="80.0" />
+          <TableColumn fx:id="colSubtotalDetalle" text="Subtotal" prefWidth="90.0" />
+        </columns>
+      </TableView>
+      <Label text="Impuestos aplicados" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+      <TableView fx:id="impuestosTable" prefHeight="120.0">
+        <columns>
+          <TableColumn fx:id="colImpuesto" text="Impuesto" prefWidth="180.0" />
+          <TableColumn fx:id="colTasa" text="Tasa" prefWidth="80.0" />
+          <TableColumn fx:id="colImporte" text="Importe" prefWidth="90.0" />
+        </columns>
+      </TableView>
+    </VBox>
+
+    <VBox spacing="6.0" prefWidth="400.0">
+      <Label text="Facturas emitidas" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+      <TableView fx:id="facturasTable">
+        <columns>
+          <TableColumn fx:id="colId" text="ID" prefWidth="50.0" />
+          <TableColumn fx:id="colFecha" text="Fecha" prefWidth="90.0" />
+          <TableColumn fx:id="colCliente" text="Cliente" prefWidth="120.0" />
+          <TableColumn fx:id="colMedidor" text="Medidor" prefWidth="90.0" />
+          <TableColumn fx:id="colKwh" text="kWh" prefWidth="70.0" />
+          <TableColumn fx:id="colSubtotal" text="Subtotal" prefWidth="90.0" />
+          <TableColumn fx:id="colIVA" text="IVA" prefWidth="80.0" />
+          <TableColumn fx:id="colTotal" text="Total" prefWidth="90.0" />
+        </columns>
+      </TableView>
+    </VBox>
+  </HBox>
 </VBox>

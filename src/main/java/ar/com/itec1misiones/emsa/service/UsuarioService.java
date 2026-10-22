@@ -7,6 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Gestion de usuarios (clase padre de Operador). El nombre identifica al usuario
+ * y la contrasena se usa para el ingreso al sistema.
+ */
 @Service
 public class UsuarioService {
 
@@ -25,19 +29,23 @@ public class UsuarioService {
     }
 
     @Transactional
-    public Usuario create(String nombre) {
+    public Usuario create(String nombre, String contrasena) {
         validarNombre(nombre, null);
         Usuario u = new Usuario();
         u.setNombre(nombre.trim());
+        u.setContrasena(contrasena != null && !contrasena.isBlank() ? contrasena : null);
         return usuarios.save(u);
     }
 
     @Transactional
-    public Usuario update(Long id, String nombre) {
+    public Usuario update(Long id, String nombre, String contrasena) {
         Usuario u = usuarios.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("No existe el usuario con id " + id));
         validarNombre(nombre, id);
         u.setNombre(nombre.trim());
+        if (contrasena != null && !contrasena.isBlank()) {
+            u.setContrasena(contrasena);
+        }
         return usuarios.save(u);
     }
 
