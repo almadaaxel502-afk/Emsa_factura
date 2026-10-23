@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import ar.com.itec1misiones.emsa.view.component.EmsaLogo?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane styleClass="app-bg" prefWidth="1020.0" prefHeight="640.0" stylesheets="@emsa.css"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ar.com.itec1misiones.emsa.view.controller.LoginController">
+  <VBox>
+
+    <HBox styleClass="login-header" spacing="14.0" alignment="CENTER_LEFT">
+      <EmsaLogo/>
+      <VBox spacing="0.0">
+        <Label text="ENERGÍA DE MISIONES" styleClass="app-title"/>
+        <Label text="Sistema de facturación eléctrica" styleClass="app-subtitle"/>
+      </VBox>
+      <Region HBox.hgrow="ALWAYS"/>
+      <Label text="ACCESO DE OPERADORES" styleClass="app-subtitle"/>
+    </HBox>
+
+    <StackPane VBox.vgrow="ALWAYS" alignment="CENTER">
+      <padding>
+        <Insets top="30" right="30" bottom="30" left="30"/>
+      </padding>
+
+      <HBox maxWidth="880.0" maxHeight="390.0" styleClass="login-panel">
+
+        <VBox styleClass="login-side" prefWidth="420.0" spacing="14.0">
+          <padding>
+            <Insets top="32" right="34" bottom="32" left="34"/>
+          </padding>
+          <Label text="INGRESO AL SISTEMA" styleClass="login-title"/>
+          <Label text="Ingresá con tu usuario de operador para liquidar facturas."
+                 styleClass="page-subtitle" wrapText="true"/>
+
+          <VBox spacing="4.0">
+            <Label text="Usuario" styleClass="field-label"/>
+            <TextField fx:id="usuarioField" promptText="Nombre de usuario"/>
+          </VBox>
+          <VBox spacing="4.0">
+            <Label text="Contraseña" styleClass="field-label"/>
+            <PasswordField fx:id="passwordField" promptText="Contraseña"/>
+          </VBox>
+
+          <Button text="INGRESAR" onAction="#onLogin" defaultButton="true"
+                  styleClass="button-accent" maxWidth="Infinity"/>
+
+          <Label fx:id="mensajeLabel" wrapText="true" styleClass="message-error"/>
+          <Label text="Usuario de prueba: demo / demo" styleClass="hint"/>
+        </VBox>
+
+        <VBox prefWidth="460.0" spacing="14.0">
+          <padding>
+            <Insets top="34" right="34" bottom="34" left="34"/>
+          </padding>
+          <HBox spacing="14.0" alignment="CENTER_LEFT">
+            <EmsaLogo/>
+            <VBox spacing="0.0">
+              <Label text="ENERGÍA DE MISIONES" styleClass="brand-title"/>
+              <Label text="Electricidad de Misiones" styleClass="brand-subtitle"/>
+            </VBox>
+          </HBox>
+          <Separator/>
+          <Label text="Sistema de gestión de lecturas y facturación del servicio eléctrico."
+                 styleClass="page-subtitle" wrapText="true"/>
+          <VBox spacing="8.0">
+            <Label text="• Liquidación por bloques de consumo" styleClass="muted"/>
+            <Label text="• IVA según el tipo de cliente" styleClass="muted"/>
+            <Label text="• Historial de facturas emitidas por medidor" styleClass="muted"/>
+            <Label text="• Administración de usuarios del sistema" styleClass="muted"/>
+          </VBox>
+          <Region VBox.vgrow="ALWAYS"/>
+          <Label text="Posadas, Misiones · Gestión interna de facturación" styleClass="hint"/>
+        </VBox>
+
+      </HBox>
+    </StackPane>
+  </VBox>
+</StackPane>
