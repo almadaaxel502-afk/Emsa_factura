@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import ar.com.itec1misiones.emsa.view.component.EmsaLogo?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="root" prefWidth="1280.0" prefHeight="780.0" styleClass="app-bg" stylesheets="@emsa.css"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ar.com.itec1misiones.emsa.view.controller.InicioController">
+
+  <top>
+    <HBox styleClass="app-header" spacing="14.0" alignment="CENTER_LEFT">
+      <EmsaLogo/>
+      <VBox spacing="0.0">
+        <Label text="ENERGÍA DE MISIONES" styleClass="app-title"/>
+        <Label text="Sistema de facturación eléctrica" styleClass="app-subtitle"/>
+      </VBox>
+      <Region HBox.hgrow="ALWAYS"/>
+      <Label text="OPERADOR" styleClass="app-subtitle"/>
+    </HBox>
+  </top>
+
+  <left>
+    <VBox styleClass="sidebar" prefWidth="210.0" spacing="6.0">
+      <Label text="MENÚ" styleClass="sidebar-title">
+        <VBox.margin>
+          <Insets bottom="4.0" left="8.0"/>
+        </VBox.margin>
+      </Label>
+      <Button fx:id="btnFacturacion" text="Facturación" onAction="#mostrarFacturacion"
+              styleClass="nav-button" maxWidth="Infinity"/>
+      <Button fx:id="btnUsuarios" text="Usuarios" onAction="#mostrarUsuarios"
+              styleClass="nav-button" maxWidth="Infinity"/>
+      <Region VBox.vgrow="ALWAYS"/>
+      <Label text="EMSA · v1.0" styleClass="sidebar-title"/>
+    </VBox>
+  </left>
+
+  <center>
+    <StackPane styleClass="app-bg"/>
+  </center>
+</BorderPane>

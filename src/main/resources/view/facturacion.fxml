@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true" styleClass="app-bg" stylesheets="@emsa.css"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ar.com.itec1misiones.emsa.view.controller.FacturacionViewController">
+
+  <VBox spacing="14.0">
+    <padding>
+      <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <VBox spacing="2.0">
+      <Label text="Liquidación de facturas" styleClass="page-title"/>
+      <Label text="Buscá el cliente o el medidor, registrá la lectura y liquidá el período."
+             styleClass="page-subtitle"/>
+    </VBox>
+
+    <HBox spacing="14.0">
+
+      <VBox styleClass="card" spacing="12.0" HBox.hgrow="ALWAYS">
+        <Label text="CLIENTE Y LECTURA" styleClass="section-mark"/>
+
+        <VBox spacing="4.0">
+          <Label text="Cliente" styleClass="field-label"/>
+          <ComboBox fx:id="clienteCombo" maxWidth="Infinity"/>
+        </VBox>
+
+        <HBox spacing="10.0" alignment="BOTTOM_LEFT">
+          <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+            <Label text="N° de serie del medidor" styleClass="field-label"/>
+            <TextField fx:id="nroSerieField" promptText="Ej: SER-0001"/>
+          </VBox>
+          <Button text="Buscar" onAction="#onBuscarPorSerie" styleClass="button-primary"/>
+          <VBox spacing="4.0" prefWidth="200.0">
+            <Label text="Medidor" styleClass="field-label"/>
+            <ComboBox fx:id="medidorCombo" maxWidth="Infinity"/>
+          </VBox>
+        </HBox>
+
+        <HBox spacing="10.0" alignment="BOTTOM_LEFT">
+          <VBox spacing="4.0" prefWidth="150.0">
+            <Label text="Lectura actual (kWh)" styleClass="field-label"/>
+            <TextField fx:id="lecturaField" promptText="Ej: 1290"/>
+          </VBox>
+          <VBox spacing="4.0" prefWidth="160.0">
+            <Label text="Fecha" styleClass="field-label"/>
+            <DatePicker fx:id="fechaPicker" maxWidth="Infinity"/>
+          </VBox>
+          <Region HBox.hgrow="ALWAYS"/>
+          <Button text="Registrar lectura" onAction="#onRegistrarLectura" styleClass="button-ghost"/>
+          <Button text="Liquidar período" onAction="#onLiquidar" styleClass="button-accent"
+                  defaultButton="true"/>
+        </HBox>
+
+        <Label fx:id="clienteLabel" styleClass="value-strong" wrapText="true"/>
+        <Label fx:id="mensajeLabel" wrapText="true" styleClass="muted"/>
+      </VBox>
+
+      <VBox styleClass="card" spacing="10.0" prefWidth="340.0">
+        <Label text="RESUMEN DEL PERÍODO" styleClass="section-mark"/>
+        <VBox spacing="2.0">
+          <Label text="Última lectura" styleClass="field-label"/>
+          <Label fx:id="lecturaActualLabel" text="-" styleClass="value-strong"/>
+        </VBox>
+        <VBox spacing="2.0">
+          <Label text="Lectura anterior" styleClass="field-label"/>
+          <Label fx:id="lecturaAnteriorLabel" text="-" styleClass="value-strong" wrapText="true"/>
+        </VBox>
+        <HBox spacing="20.0">
+          <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+            <Label text="kWh del período" styleClass="field-label"/>
+            <Label fx:id="kwhPeriodoLabel" text="-" styleClass="kpi-value"/>
+          </VBox>
+          <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+            <Label text="IVA" styleClass="field-label"/>
+            <Label fx:id="ivaLabel" text="-" styleClass="value-strong" wrapText="true"/>
+          </VBox>
+        </HBox>
+        <Separator/>
+        <HBox spacing="10.0" alignment="CENTER_LEFT">
+          <Label text="Total" styleClass="card-title"/>
+          <Region HBox.hgrow="ALWAYS"/>
+          <Label fx:id="totalLabel" text="-" styleClass="kpi-value"/>
+        </HBox>
+      </VBox>
+
+    </HBox>
+
+    <HBox spacing="14.0">
+
+      <VBox styleClass="card" spacing="8.0" HBox.hgrow="ALWAYS" prefHeight="220.0">
+        <Label text="DETALLE DE CONSUMO" styleClass="section-mark"/>
+        <TableView fx:id="detalleTable" VBox.vgrow="ALWAYS">
+          <columns>
+            <TableColumn fx:id="colTarifa" text="Tarifa" prefWidth="170.0"/>
+            <TableColumn fx:id="colCantidad" text="kWh" prefWidth="80.0"/>
+            <TableColumn fx:id="colPrecio" text="Precio" prefWidth="80.0"/>
+            <TableColumn fx:id="colSubtotalDetalle" text="Subtotal" prefWidth="95.0"/>
+          </columns>
+        </TableView>
+      </VBox>
+
+      <VBox styleClass="card" spacing="8.0" prefWidth="380.0" prefHeight="220.0">
+        <Label text="IMPUESTOS APLICADOS" styleClass="section-mark"/>
+        <TableView fx:id="impuestosTable" VBox.vgrow="ALWAYS">
+          <columns>
+            <TableColumn fx:id="colImpuesto" text="Impuesto" prefWidth="160.0"/>
+            <TableColumn fx:id="colTasa" text="Tasa" prefWidth="80.0"/>
+            <TableColumn fx:id="colImporte" text="Importe" prefWidth="100.0"/>
+          </columns>
+        </TableView>
+      </VBox>
+
+    </HBox>
+
+    <VBox styleClass="card" spacing="8.0" prefHeight="230.0">
+      <Label text="FACTURAS EMITIDAS" styleClass="section-mark"/>
+      <TableView fx:id="facturasTable" VBox.vgrow="ALWAYS">
+        <columns>
+          <TableColumn fx:id="colId" text="ID" prefWidth="60.0"/>
+          <TableColumn fx:id="colFecha" text="Fecha" prefWidth="100.0"/>
+          <TableColumn fx:id="colCliente" text="Cliente" prefWidth="180.0"/>
+          <TableColumn fx:id="colMedidor" text="Medidor" prefWidth="120.0"/>
+          <TableColumn fx:id="colKwh" text="kWh" prefWidth="80.0"/>
+          <TableColumn fx:id="colSubtotal" text="Subtotal" prefWidth="100.0"/>
+          <TableColumn fx:id="colIVA" text="IVA" prefWidth="90.0"/>
+          <TableColumn fx:id="colTotal" text="Total" prefWidth="110.0"/>
+        </columns>
+      </TableView>
+    </VBox>
+
+  </VBox>
+</ScrollPane>
