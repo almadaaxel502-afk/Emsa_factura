@@ -1,5 +1,6 @@
 package ar.com.itec1misiones.emsa.service;
 
+import ar.com.itec1misiones.emsa.dto.UsuarioDTO;
 import ar.com.itec1misiones.emsa.entity.Usuario;
 import ar.com.itec1misiones.emsa.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,12 @@ public class UsuarioService {
         this.usuarios = usuarios;
     }
 
-    public List<Usuario> findAll() {
-        return usuarios.findAll();
+    public List<UsuarioDTO> findAll() {
+        return usuarios.findAll().stream().map(this::toDTO).toList();
+    }
+
+    private UsuarioDTO toDTO(Usuario usuario) {
+        return new UsuarioDTO(usuario.getIdUsuario(), usuario.getNombre());
     }
 
     public Usuario save(Usuario usuario) {

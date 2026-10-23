@@ -1,5 +1,6 @@
 package ar.com.itec1misiones.emsa;
 
+import ar.com.itec1misiones.emsa.dto.LecturaDTO;
 import ar.com.itec1misiones.emsa.entity.Lectura;
 import ar.com.itec1misiones.emsa.entity.Medidor;
 import ar.com.itec1misiones.emsa.repository.LecturaRepository;
@@ -55,6 +56,19 @@ public class LecturaServiceTest {
 
         assertEquals(0, new BigDecimal("1290").compareTo(guardada.getValor()));
         assertEquals(medidor, guardada.getMedidor());
+    }
+
+    @Test
+    void registraLaLecturaYDevuelveSuDTO() {
+        Medidor medidor = medidor();
+        when(medidorService.obtenerPorNroSerie("SER-0001")).thenReturn(medidor);
+        when(lecturas.findByMedidor(1L)).thenReturn(List.of());
+        when(lecturas.save(any(Lectura.class))).thenAnswer(i -> i.getArgument(0));
+
+        LecturaDTO dto = lecturaService.registrarLecturaDto("SER-0001", LocalDate.now(), new BigDecimal("1290"));
+
+        assertEquals(0, BigDecimal.valueOf(dto.getValor()).compareTo(new BigDecimal("1290")));
+        assertEquals("SER-0001", dto.getMedidorNroSerie());
     }
 
     @Test

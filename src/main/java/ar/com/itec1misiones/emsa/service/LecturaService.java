@@ -1,5 +1,6 @@
 package ar.com.itec1misiones.emsa.service;
 
+import ar.com.itec1misiones.emsa.dto.LecturaDTO;
 import ar.com.itec1misiones.emsa.entity.Lectura;
 import ar.com.itec1misiones.emsa.entity.Medidor;
 import ar.com.itec1misiones.emsa.repository.LecturaRepository;
@@ -54,6 +55,25 @@ public class LecturaService {
         lectura.setFecha(fecha);
         lectura.setValor(valor);
         return lecturas.save(lectura);
+    }
+
+    /** Registra la lectura y devuelve su DTO (punto de entrada de la vista). */
+    @Transactional
+    public LecturaDTO registrarLecturaDto(String nroSerie, LocalDate fecha, BigDecimal valor) {
+        return toDTO(registrarLectura(nroSerie, fecha, valor));
+    }
+
+    /** Mapea la entidad Lectura a su DTO de presentacion. */
+    public LecturaDTO toDTO(Lectura lectura) {
+        LecturaDTO dto = new LecturaDTO();
+        dto.setId(lectura.getIdLectura());
+        dto.setFecha(lectura.getFecha());
+        dto.setValor(lectura.getValor() != null ? lectura.getValor().doubleValue() : 0);
+        if (lectura.getMedidor() != null) {
+            dto.setMedidorId(lectura.getMedidor().getIdMedidor());
+            dto.setMedidorNroSerie(lectura.getMedidor().getNroSerie());
+        }
+        return dto;
     }
 
     @Transactional(readOnly = true)

@@ -150,7 +150,7 @@ public class FacturacionViewController {
         }
         try {
             BigDecimal valor = new BigDecimal(lecturaField.getText().trim());
-            LecturaDTO lectura = toDTO(lecturaService.registrarLectura(nroSerie, fechaPicker.getValue(), valor));
+            LecturaDTO lectura = lecturaService.registrarLecturaDto(nroSerie, fechaPicker.getValue(), valor);
             mensajeLabel.setText("Lectura registrada: " + lectura.getValor() + " kWh.");
             refrescarPeriodo();
         } catch (NumberFormatException e) {
@@ -254,13 +254,5 @@ public class FacturacionViewController {
         totalLabel.setText("-");
         detalleTable.setItems(FXCollections.observableArrayList());
         impuestosTable.setItems(FXCollections.observableArrayList());
-    }
-
-    private LecturaDTO toDTO(ar.com.itec1misiones.emsa.entity.Lectura lectura) {
-        LecturaDTO dto = new LecturaDTO();
-        dto.setId(lectura.getIdLectura());
-        dto.setFecha(lectura.getFecha());
-        dto.setValor(lectura.getValor() != null ? lectura.getValor().doubleValue() : 0);
-        return dto;
     }
 }

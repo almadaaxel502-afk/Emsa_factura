@@ -1,6 +1,6 @@
 package ar.com.itec1misiones.emsa.view.controller;
 
-import ar.com.itec1misiones.emsa.entity.Usuario;
+import ar.com.itec1misiones.emsa.dto.UsuarioDTO;
 import ar.com.itec1misiones.emsa.service.UsuarioService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class UsuarioViewController {
 
-    @FXML private TableView<Usuario> usuariosTable;
-    @FXML private TableColumn<Usuario, Long> colId;
-    @FXML private TableColumn<Usuario, String> colNombre;
+    @FXML private TableView<UsuarioDTO> usuariosTable;
+    @FXML private TableColumn<UsuarioDTO, Long> colId;
+    @FXML private TableColumn<UsuarioDTO, String> colNombre;
     @FXML private TextField nombreField;
     @FXML private PasswordField contrasenaField;
     @FXML private Label mensajeLabel;
@@ -51,7 +51,7 @@ public class UsuarioViewController {
     @FXML
     public void onGuardar() {
         try {
-            Usuario seleccionado = usuariosTable.getSelectionModel().getSelectedItem();
+            UsuarioDTO seleccionado = usuariosTable.getSelectionModel().getSelectedItem();
             if (seleccionado == null) {
                 usuarioService.create(nombreField.getText(), contrasenaField.getText());
                 mensajeLabel.setText("Usuario creado.");
@@ -70,7 +70,7 @@ public class UsuarioViewController {
     @FXML
     public void onEliminar() {
         try {
-            Usuario seleccionado = usuariosTable.getSelectionModel().getSelectedItem();
+            UsuarioDTO seleccionado = usuariosTable.getSelectionModel().getSelectedItem();
             if (seleccionado == null) {
                 mensajeLabel.setText("Seleccione un usuario de la tabla.");
                 return;
