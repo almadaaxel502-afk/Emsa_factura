@@ -25,6 +25,15 @@ public class UsuarioService {
         return usuarios.findAll().stream().map(this::toDTO).toList();
     }
 
+    @Transactional(readOnly = true)
+    public List<UsuarioDTO> buscarPorNombre(String texto) {
+        if (texto == null || texto.isBlank()) {
+            return findAll();
+        }
+        return usuarios.findByNombreContainingIgnoreCaseOrderByIdUsuarioAsc(texto.trim())
+                .stream().map(this::toDTO).toList();
+    }
+
     private UsuarioDTO toDTO(Usuario usuario) {
         return new UsuarioDTO(usuario.getIdUsuario(), usuario.getNombre());
     }

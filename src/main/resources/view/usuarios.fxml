@@ -4,33 +4,59 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="TOP_LEFT" spacing="12.0" prefWidth="780.0" prefHeight="560.0"
+<ScrollPane fitToWidth="true" styleClass="app-bg" stylesheets="@emsa.css"
       xmlns="http://javafx.com/javafx/17.0.12"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="ar.com.itec1misiones.emsa.view.controller.UsuarioViewController">
-  <padding>
-    <Insets top="16" right="16" bottom="16" left="16"/>
-  </padding>
 
-  <Label text="Gestión de usuarios" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+  <VBox spacing="14.0">
+    <padding>
+      <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
 
-  <HBox spacing="10.0" alignment="CENTER_LEFT">
-    <Label text="Nombre:" />
-    <TextField fx:id="nombreField" promptText="Nombre de usuario" prefWidth="200.0" />
-    <Label text="Contraseña:" />
-    <PasswordField fx:id="contrasenaField" promptText="Contraseña" prefWidth="160.0" />
-    <Button text="Nuevo" onAction="#onNuevo" />
-    <Button text="Guardar" onAction="#onGuardar" defaultButton="true" />
-    <Button text="Eliminar" onAction="#onEliminar" />
-  </HBox>
+    <VBox spacing="2.0">
+      <Label text="Gestión de usuarios" styleClass="page-title"/>
+      <Label text="Creá, buscá, editá y eliminá los usuarios que pueden ingresar al sistema."
+             styleClass="page-subtitle"/>
+    </VBox>
 
-  <Label fx:id="mensajeLabel" textFill="#1b5e20" wrapText="true" />
+    <HBox spacing="14.0">
 
-  <Label text="Usuarios registrados" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
-  <TableView fx:id="usuariosTable" VBox.vgrow="ALWAYS">
-    <columns>
-      <TableColumn fx:id="colId" text="ID" prefWidth="80.0" />
-      <TableColumn fx:id="colNombre" text="Nombre" prefWidth="260.0" />
-    </columns>
-  </TableView>
-</VBox>
+      <VBox styleClass="card" spacing="10.0" prefWidth="320.0">
+        <Label text="DATOS DEL USUARIO" styleClass="section-mark"/>
+        <VBox spacing="4.0">
+          <Label text="Nombre" styleClass="field-label"/>
+          <TextField fx:id="nombreField" promptText="Nombre de usuario"/>
+        </VBox>
+        <VBox spacing="4.0">
+          <Label text="Contraseña" styleClass="field-label"/>
+          <PasswordField fx:id="contrasenaField" promptText="Contraseña"/>
+        </VBox>
+        <HBox spacing="10.0">
+          <Button text="Nuevo" onAction="#onNuevo" styleClass="button-ghost" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+          <Button text="Guardar" onAction="#onGuardar" styleClass="button-accent" HBox.hgrow="ALWAYS" maxWidth="Infinity" defaultButton="true"/>
+        </HBox>
+        <Button text="Eliminar usuario" onAction="#onEliminar" styleClass="button-danger" maxWidth="Infinity"/>
+        <Label fx:id="mensajeLabel" wrapText="true" styleClass="muted"/>
+      </VBox>
+
+      <VBox styleClass="card" spacing="10.0" HBox.hgrow="ALWAYS">
+        <HBox spacing="8.0" alignment="CENTER_LEFT">
+          <Label text="USUARIOS REGISTRADOS" styleClass="section-mark"/>
+          <Region HBox.hgrow="ALWAYS"/>
+          <TextField fx:id="buscarField" promptText="Buscar por nombre..." prefWidth="230.0"/>
+          <Button text="Buscar" onAction="#onBuscar" styleClass="button-primary"/>
+          <Button text="Limpiar" onAction="#onLimpiarBusqueda" styleClass="button-ghost"/>
+        </HBox>
+        <TableView fx:id="usuariosTable" VBox.vgrow="ALWAYS" prefHeight="420.0">
+          <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="80.0"/>
+            <TableColumn fx:id="colNombre" text="Nombre" prefWidth="300.0"/>
+          </columns>
+        </TableView>
+      </VBox>
+
+    </HBox>
+
+  </VBox>
+</ScrollPane>

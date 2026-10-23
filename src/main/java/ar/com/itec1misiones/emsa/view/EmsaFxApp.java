@@ -29,6 +29,8 @@ public class EmsaFxApp extends Application {
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
         appInstance = this;
+        stage.setMinWidth(1040);
+        stage.setMinHeight(680);
         showScene("view/login.fxml", "EMSA - Ingreso");
     }
 
@@ -50,6 +52,8 @@ public class EmsaFxApp extends Application {
             primaryStage.setScene(new Scene(root));
             primaryStage.setTitle(title);
             primaryStage.show();
+            primaryStage.sizeToScene();
+            primaryStage.centerOnScreen();
         } catch (Exception e) {
             throw new IllegalStateException("Error al cargar la vista: " + resourcePath, e);
         }

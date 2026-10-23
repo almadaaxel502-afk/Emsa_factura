@@ -34,4 +34,18 @@ public class UsuarioServiceTest {
         assertEquals(3L, lista.get(0).getIdUsuario());
         assertEquals("demo", lista.get(0).getNombre());
     }
+
+    @Test
+    void buscaUsuariosPorNombreYDevuelveDTOs() {
+        Usuario demo = new Usuario();
+        demo.setIdUsuario(3L);
+        demo.setNombre("demo");
+        when(usuarios.findByNombreContainingIgnoreCaseOrderByIdUsuarioAsc("de"))
+                .thenReturn(List.of(demo));
+
+        List<UsuarioDTO> lista = usuarioService.buscarPorNombre(" de ");
+
+        assertEquals(1, lista.size());
+        assertEquals("demo", lista.get(0).getNombre());
+    }
 }

@@ -25,10 +25,15 @@ public class LoginController {
     }
 
     @FXML
+    public void initialize() {
+        usuarioField.requestFocus();
+    }
+
+    @FXML
     public void onLogin() {
         boolean ok = loginService.autenticar(usuarioField.getText(), passwordField.getText());
         if (ok) {
-            EmsaFxApp.showScene("view/inicio.fxml", "EMSA - Facturación");
+            EmsaFxApp.showScene("view/inicio.fxml", "EMSA | Energía de Misiones - Facturación");
         } else {
             mensajeLabel.setText("Usuario o contraseña inválidos.");
         }

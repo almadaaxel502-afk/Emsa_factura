@@ -126,7 +126,7 @@ public class FacturacionViewController {
     public void onBuscarPorSerie() {
         String nroSerie = nroSerieField.getText();
         if (nroSerie == null || nroSerie.isBlank()) {
-            mensajeLabel.setText("Indique el número de serie del medidor.");
+            mensaje("Indique el número de serie del medidor.", true);
             return;
         }
         try {
@@ -134,9 +134,9 @@ public class FacturacionViewController {
             clienteCombo.setItems(FXCollections.observableArrayList(cliente));
             clienteCombo.setValue(cliente);
             clienteCombo.getEditor().setText(cliente.toString());
-            mensajeLabel.setText("Medidor " + nroSerie.trim() + " pertenece a " + cliente.getNombreCompleto() + ".");
+            mensaje("Medidor " + nroSerie.trim() + " pertenece a " + cliente.getNombreCompleto() + ".", false);
         } catch (Exception e) {
-            mensajeLabel.setText("Error: " + e.getMessage());
+            mensaje("Error: " + e.getMessage(), true);
         }
     }
 
@@ -145,18 +145,18 @@ public class FacturacionViewController {
     public void onRegistrarLectura() {
         String nroSerie = medidorCombo.getValue();
         if (nroSerie == null) {
-            mensajeLabel.setText("Seleccione un medidor.");
+            mensaje("Seleccione un medidor.", true);
             return;
         }
         try {
             BigDecimal valor = new BigDecimal(lecturaField.getText().trim());
             LecturaDTO lectura = lecturaService.registrarLecturaDto(nroSerie, fechaPicker.getValue(), valor);
-            mensajeLabel.setText("Lectura registrada: " + lectura.getValor() + " kWh.");
+            mensaje("Lectura registrada: " + lectura.getValor() + " kWh.", false);
             refrescarPeriodo();
         } catch (NumberFormatException e) {
-            mensajeLabel.setText("La lectura debe ser un número.");
+            mensaje("La lectura debe ser un número.", true);
         } catch (Exception e) {
-            mensajeLabel.setText("Error: " + e.getMessage());
+            mensaje("Error: " + e.getMessage(), true);
         }
     }
 
@@ -165,18 +165,18 @@ public class FacturacionViewController {
     public void onLiquidar() {
         String nroSerie = medidorCombo.getValue();
         if (nroSerie == null) {
-            mensajeLabel.setText("Seleccione un medidor.");
+            mensaje("Seleccione un medidor.", true);
             return;
         }
         try {
             FacturaDTO factura = facturacionService.liquidarUltimaLectura(nroSerie);
             facturasTable.getItems().add(0, factura);
             mostrarDetalle(factura);
-            mensajeLabel.setText("Factura " + factura.getId() + " emitida: "
-                    + factura.getKwhTotales() + " kWh, total $" + factura.getTotal() + ".");
+            mensaje("Factura " + factura.getId() + " emitida: "
+                    + factura.getKwhTotales() + " kWh, total $" + factura.getTotal() + ".", false);
             refrescarPeriodo();
         } catch (Exception e) {
-            mensajeLabel.setText("Error: " + e.getMessage());
+            mensaje("Error: " + e.getMessage(), true);
         }
     }
 
@@ -234,7 +234,7 @@ public class FacturacionViewController {
                     ? periodo.getTipoIVADescripcion() + " (" + periodo.getTipoIVATasa() + "%)" : "-");
             totalLabel.setText("-");
         } catch (Exception e) {
-            mensajeLabel.setText("Error: " + e.getMessage());
+            mensaje("Error: " + e.getMessage(), true);
         }
     }
 
@@ -254,5 +254,11 @@ public class FacturacionViewController {
         totalLabel.setText("-");
         detalleTable.setItems(FXCollections.observableArrayList());
         impuestosTable.setItems(FXCollections.observableArrayList());
+    }
+
+    private void mensaje(String texto, boolean error) {
+        mensajeLabel.setText(texto);
+        mensajeLabel.getStyleClass().removeAll("message-ok", "message-error", "muted");
+        mensajeLabel.getStyleClass().add(error ? "message-error" : "message-ok");
     }
 }
