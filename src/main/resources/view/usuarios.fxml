@@ -15,8 +15,8 @@
     </padding>
 
     <VBox spacing="2.0">
-      <Label text="Gestión de usuarios" styleClass="page-title"/>
-      <Label text="Creá, buscá, editá y eliminá los usuarios que pueden ingresar al sistema."
+      <Label text="Gestión de operadores" styleClass="page-title"/>
+      <Label text="Creá, buscá, editá y eliminá los operadores que pueden ingresar al sistema."
              styleClass="page-subtitle"/>
     </VBox>
 
@@ -36,15 +36,15 @@
           <Button text="Nuevo" onAction="#onNuevo" styleClass="button-ghost" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
           <Button text="Guardar" onAction="#onGuardar" styleClass="button-accent" HBox.hgrow="ALWAYS" maxWidth="Infinity" defaultButton="true"/>
         </HBox>
-        <Button text="Eliminar usuario" onAction="#onEliminar" styleClass="button-danger" maxWidth="Infinity"/>
+        <Button text="Eliminar operador" onAction="#onEliminar" styleClass="button-danger" maxWidth="Infinity"/>
         <Label fx:id="mensajeLabel" wrapText="true" styleClass="muted"/>
       </VBox>
 
       <VBox styleClass="card" spacing="10.0" HBox.hgrow="ALWAYS">
         <HBox spacing="8.0" alignment="CENTER_LEFT">
-          <Label text="USUARIOS REGISTRADOS" styleClass="section-mark"/>
+          <Label text="OPERADORES REGISTRADOS" styleClass="section-mark"/>
           <Region HBox.hgrow="ALWAYS"/>
-          <TextField fx:id="buscarField" promptText="Buscar por nombre..." prefWidth="230.0"/>
+          <TextField fx:id="buscarField" promptText="Buscar operador por nombre..." prefWidth="230.0"/>
           <Button text="Buscar" onAction="#onBuscar" styleClass="button-primary"/>
           <Button text="Limpiar" onAction="#onLimpiarBusqueda" styleClass="button-ghost"/>
         </HBox>

@@ -57,9 +57,9 @@ public class UsuarioViewController {
             List<UsuarioDTO> encontrados = usuarioService.buscarPorNombre(buscarField.getText());
             recargar(encontrados);
             if (encontrados.isEmpty()) {
-                mensaje("No se encontraron usuarios con ese nombre.", true);
+                mensaje("No se encontraron operadores con ese nombre.", true);
             } else {
-                mensaje(encontrados.size() + " usuario(s) encontrado(s).", false);
+                mensaje(encontrados.size() + " operador(es) encontrado(s).", false);
             }
         } catch (Exception e) {
             mensaje("Error: " + e.getMessage(), true);
@@ -78,11 +78,11 @@ public class UsuarioViewController {
             UsuarioDTO seleccionado = usuariosTable.getSelectionModel().getSelectedItem();
             if (seleccionado == null) {
                 usuarioService.create(nombreField.getText(), contrasenaField.getText());
-                mensaje("Usuario creado.", false);
+                mensaje("Operador creado.", false);
             } else {
                 usuarioService.update(seleccionado.getIdUsuario(), nombreField.getText(),
                         contrasenaField.getText());
-                mensaje("Usuario actualizado.", false);
+                mensaje("Operador actualizado.", false);
             }
             onNuevo();
             recargar();
@@ -95,20 +95,20 @@ public class UsuarioViewController {
     public void onEliminar() {
         UsuarioDTO seleccionado = usuariosTable.getSelectionModel().getSelectedItem();
         if (seleccionado == null) {
-            mensaje("Seleccione un usuario de la tabla.", true);
+            mensaje("Seleccione un operador de la tabla.", true);
             return;
         }
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION,
-                "¿Eliminar al usuario \"" + seleccionado.getNombre() + "\"?",
+                "¿Eliminar al operador \"" + seleccionado.getNombre() + "\"?",
                 ButtonType.OK, ButtonType.CANCEL);
-        confirmacion.setTitle("Eliminar usuario");
+        confirmacion.setTitle("Eliminar operador");
         confirmacion.setHeaderText(null);
         confirmacion.showAndWait()
                 .filter(boton -> boton == ButtonType.OK)
                 .ifPresent(boton -> {
                     try {
                         usuarioService.delete(seleccionado.getIdUsuario());
-                        mensaje("Usuario eliminado.", false);
+                        mensaje("Operador eliminado.", false);
                         onNuevo();
                         recargar();
                     } catch (Exception e) {

@@ -1,28 +1,31 @@
 package ar.com.itec1misiones.emsa.service;
 
 import ar.com.itec1misiones.emsa.dto.UsuarioDTO;
+import ar.com.itec1misiones.emsa.entity.Operador;
 import ar.com.itec1misiones.emsa.entity.Usuario;
-import ar.com.itec1misiones.emsa.repository.UsuarioRepository;
+import ar.com.itec1misiones.emsa.repository.OperadorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
- * Gestion de usuarios (clase padre de Operador). El nombre identifica al usuario
- * y la contrasena se usa para el ingreso al sistema.
+ * Gestion de operadores: son los unicos usuarios que pueden ingresar al sistema.
+ * Los titulares de clientes se guardan como {@link Usuario}, pero no se administran
+ * desde esta pantalla ni participan del login.
  */
 @Service
 public class UsuarioService {
 
-    private final UsuarioRepository usuarios;
+    private final OperadorRepository operadores;
 
-    public UsuarioService(UsuarioRepository usuarios) {
-        this.usuarios = usuarios;
+    public UsuarioService(OperadorRepository operadores) {
+        this.operadores = operadores;
     }
 
+    @Transactional(readOnly = true)
     public List<UsuarioDTO> findAll() {
-        return usuarios.findAll().stream().map(this::toDTO).toList();
+        return operadores.findAll().stream().map(this::toDTO).toList();
     }
 
     @Transactional(readOnly = true)
@@ -30,7 +33,7 @@ public class UsuarioService {
         if (texto == null || texto.isBlank()) {
             return findAll();
         }
-        return usuarios.findByNombreContainingIgnoreCaseOrderByIdUsuarioAsc(texto.trim())
+        return operadores.findByNombreContainingIgnoreCaseOrderByIdUsuarioAsc(texto.trim())
                 .stream().map(this::toDTO).toList();
     }
 
@@ -38,48 +41,47 @@ public class UsuarioService {
         return new UsuarioDTO(usuario.getIdUsuario(), usuario.getNombre());
     }
 
-    public Usuario save(Usuario usuario) {
-        return usuarios.save(usuario);
-    }
-
     @Transactional
-    public Usuario create(String nombre, String contrasena) {
+    public Operador create(String nombre, String contrasena) {
         validarNombre(nombre, null);
-        Usuario u = new Usuario();
-        u.setNombre(nombre.trim());
-        u.setContrasena(contrasena != null && !contrasena.isBlank() ? contrasena : null);
-        return usuarios.save(u);
+        if (contrasena == null || contrasena.isBlank()) {
+            throw new IllegalArgumentException("La contrasena es obligatoria.");
+        }
+        Operador operador = new Operador();
+        operador.setNombre(nombre.trim());
+        operador.setContrasena(contrasena);
+        return operadores.save(operador);
     }
 
     @Transactional
-    public Usuario update(Long id, String nombre, String contrasena) {
-        Usuario u = usuarios.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("No existe el usuario con id " + id));
+    public Operador update(Long id, String nombre, String contrasena) {
+        Operador operador = operadores.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("No existe el operador con id " + id));
         validarNombre(nombre, id);
-        u.setNombre(nombre.trim());
+        operador.setNombre(nombre.trim());
         if (contrasena != null && !contrasena.isBlank()) {
-            u.setContrasena(contrasena);
+            operador.setContrasena(contrasena);
         }
-        return usuarios.save(u);
+        return operadores.save(operador);
     }
 
     @Transactional
     public void delete(Long id) {
-        if (!usuarios.existsById(id)) {
-            throw new IllegalArgumentException("No existe el usuario con id " + id);
+        if (!operadores.existsById(id)) {
+            throw new IllegalArgumentException("No existe el operador con id " + id);
         }
-        usuarios.deleteById(id);
+        operadores.deleteById(id);
     }
 
     private void validarNombre(String nombre, Long excluyendoId) {
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre es obligatorio.");
         }
-        boolean duplicado = usuarios.findAll().stream()
+        boolean duplicado = operadores.findAll().stream()
                 .anyMatch(u -> (excluyendoId == null || !u.getIdUsuario().equals(excluyendoId))
                         && u.getNombre() != null && u.getNombre().equalsIgnoreCase(nombre.trim()));
         if (duplicado) {
-            throw new IllegalArgumentException("Ya existe un usuario con ese nombre.");
+            throw new IllegalArgumentException("Ya existe un operador con ese nombre.");
         }
     }
 }
