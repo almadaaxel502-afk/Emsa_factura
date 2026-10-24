@@ -1,5 +1,6 @@
 package ar.com.itec1misiones.emsa;
 
+import ar.com.itec1misiones.emsa.view.controller.ClienteViewController;
 import ar.com.itec1misiones.emsa.view.controller.FacturacionViewController;
 import ar.com.itec1misiones.emsa.view.controller.InicioController;
 import ar.com.itec1misiones.emsa.view.controller.LoginController;
@@ -72,6 +73,11 @@ public class FxmlViewsTest {
     @Test
     void vistaDeFacturacionCoincideConSuController() throws Exception {
         verificar("view/facturacion.fxml", FacturacionViewController.class);
+    }
+
+    @Test
+    void vistaDeClientesCoincideConSuController() throws Exception {
+        verificar("view/clientes.fxml", ClienteViewController.class);
     }
 
     @Test

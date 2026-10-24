@@ -4,7 +4,9 @@ import ar.com.itec1misiones.emsa.service.ClienteService;
 import ar.com.itec1misiones.emsa.service.FacturacionService;
 import ar.com.itec1misiones.emsa.service.LecturaService;
 import ar.com.itec1misiones.emsa.service.LoginService;
+import ar.com.itec1misiones.emsa.service.TipoIVAService;
 import ar.com.itec1misiones.emsa.service.UsuarioService;
+import ar.com.itec1misiones.emsa.view.controller.ClienteViewController;
 import ar.com.itec1misiones.emsa.view.controller.FacturacionViewController;
 import ar.com.itec1misiones.emsa.view.controller.InicioController;
 import ar.com.itec1misiones.emsa.view.controller.LoginController;
@@ -39,6 +41,12 @@ public class FxmlLoadTest {
                 mock(ClienteService.class), mock(FacturacionService.class), mock(LecturaService.class)));
         Parent vistaFacturacion = facturacion.load();
         assertNotNull(vistaFacturacion);
+
+        FXMLLoader clientes = new FXMLLoader(
+                getClass().getClassLoader().getResource("view/clientes.fxml"));
+        clientes.setControllerFactory(clazz -> new ClienteViewController(
+                mock(ClienteService.class), mock(TipoIVAService.class)));
+        assertNotNull(clientes.load());
 
         FXMLLoader usuarios = new FXMLLoader(
                 getClass().getClassLoader().getResource("view/usuarios.fxml"));

@@ -20,6 +20,9 @@ public class InicioController {
     private Button btnFacturacion;
 
     @FXML
+    private Button btnClientes;
+
+    @FXML
     private Button btnUsuarios;
 
     private final ApplicationContext context;
@@ -40,6 +43,12 @@ public class InicioController {
     }
 
     @FXML
+    public void mostrarClientes() {
+        activar(btnClientes);
+        cargarCentro("/view/clientes.fxml");
+    }
+
+    @FXML
     public void mostrarUsuarios() {
         activar(btnUsuarios);
         cargarCentro("/view/usuarios.fxml");
@@ -48,6 +57,9 @@ public class InicioController {
     private void activar(Button activo) {
         if (btnFacturacion != null) {
             btnFacturacion.getStyleClass().remove(CLASE_ACTIVA);
+        }
+        if (btnClientes != null) {
+            btnClientes.getStyleClass().remove(CLASE_ACTIVA);
         }
         if (btnUsuarios != null) {
             btnUsuarios.getStyleClass().remove(CLASE_ACTIVA);

@@ -16,4 +16,9 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
             + "lower(coalesce(c.apellido, '')) like lower(concat('%', :texto, '%')) or "
             + "coalesce(c.identificacionNacional, '') like concat('%', :texto, '%')")
     List<Cliente> buscarPorNombre(@Param("texto") String texto);
+
+    boolean existsByIdentificacionNacionalIgnoreCase(String identificacionNacional);
+
+    boolean existsByIdentificacionNacionalIgnoreCaseAndIdClienteNot(
+            String identificacionNacional, Long idCliente);
 }
