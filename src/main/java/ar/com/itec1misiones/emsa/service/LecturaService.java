@@ -39,6 +39,11 @@ public class LecturaService {
         List<Lectura> historial = lecturas.findByMedidor(medidor.getIdMedidor());
         if (!historial.isEmpty()) {
             Lectura ultima = historial.get(0);
+            LocalDate fechaUltima = ultima.getFecha();
+            if (fechaUltima != null && !fecha.isAfter(fechaUltima)) {
+                throw new IllegalArgumentException("La fecha de la lectura (" + fecha
+                        + ") debe ser posterior a la última registrada (" + fechaUltima + ").");
+            }
             int comparacion = valor.compareTo(ultima.getValor());
             if (comparacion == 0) {
                 throw new IllegalArgumentException("Ya existe una lectura registrada con el valor "

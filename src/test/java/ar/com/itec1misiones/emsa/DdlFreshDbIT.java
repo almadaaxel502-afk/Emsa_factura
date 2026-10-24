@@ -29,4 +29,17 @@ public class DdlFreshDbIT {
             assertTrue(tablas.contains(esperada), "Falta tabla: " + esperada);
         }
     }
+
+    @Test
+    void creaLaUnicidadDeLecturaYFacturaPorMedidorYFecha() {
+        List<String> uniques = jdbc.queryForList(
+                "SELECT constraint_name FROM information_schema.table_constraints "
+                        + "WHERE table_schema = 'emsa_fresh' AND constraint_type = 'UNIQUE' "
+                        + "AND table_name IN ('lecturas', 'facturas')",
+                String.class);
+        assertTrue(uniques.contains("uk_lectura_medidor_fecha"),
+                "Falta unique (id_medidor, fecha) en lecturas: " + uniques);
+        assertTrue(uniques.contains("uk_factura_medidor_fecha"),
+                "Falta unique (id_medidor, fecha) en facturas: " + uniques);
+    }
 }

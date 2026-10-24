@@ -13,7 +13,10 @@ import java.util.List;
  * agregacion con los items de consumo y de impuesto (el todo es la Factura).
  */
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-@Entity @Table(name = "facturas")
+@Entity
+@Table(name = "facturas",
+        uniqueConstraints = @UniqueConstraint(name = "uk_factura_medidor_fecha",
+                columnNames = {"id_medidor", "fecha"}))
 public class Factura {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

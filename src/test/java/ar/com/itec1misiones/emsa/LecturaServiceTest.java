@@ -104,6 +104,48 @@ public class LecturaServiceTest {
     }
 
     @Test
+    void rechazaLecturaConFechaAnteriorALaUltima() {
+        Medidor medidor = medidor();
+        when(medidorService.obtenerPorNroSerie("SER-0001")).thenReturn(medidor);
+        when(lecturas.findByMedidor(1L)).thenReturn(List.of(
+                lectura(2L, medidor, LocalDate.now(), "1290")));
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () ->
+                lecturaService.registrarLectura("SER-0001",
+                        LocalDate.now().minusDays(3), new BigDecimal("1300")));
+
+        assertTrue(e.getMessage().contains("posterior"));
+    }
+
+    @Test
+    void rechazaLecturaEnLaMismaFechaDeLaUltima() {
+        Medidor medidor = medidor();
+        when(medidorService.obtenerPorNroSerie("SER-0001")).thenReturn(medidor);
+        when(lecturas.findByMedidor(1L)).thenReturn(List.of(
+                lectura(2L, medidor, LocalDate.now(), "1290")));
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () ->
+                lecturaService.registrarLectura("SER-0001", LocalDate.now(), new BigDecimal("1300")));
+
+        assertTrue(e.getMessage().contains("posterior"));
+    }
+
+    @Test
+    void aceptaLecturaConFechaPosteriorYValorMayor() {
+        Medidor medidor = medidor();
+        when(medidorService.obtenerPorNroSerie("SER-0001")).thenReturn(medidor);
+        when(lecturas.findByMedidor(1L)).thenReturn(List.of(
+                lectura(2L, medidor, LocalDate.now().minusDays(30), "1290")));
+        when(lecturas.save(any(Lectura.class))).thenAnswer(i -> i.getArgument(0));
+
+        Lectura guardada = lecturaService.registrarLectura("SER-0001",
+                LocalDate.now(), new BigDecimal("1300"));
+
+        assertEquals(LocalDate.now(), guardada.getFecha());
+        assertEquals(0, new BigDecimal("1300").compareTo(guardada.getValor()));
+    }
+
+    @Test
     void calculaElConsumoComoDiferenciaConLaLecturaAnterior() {
         Medidor medidor = medidor();
         Lectura actual = lectura(2L, medidor, LocalDate.now().minusDays(5), "1290");

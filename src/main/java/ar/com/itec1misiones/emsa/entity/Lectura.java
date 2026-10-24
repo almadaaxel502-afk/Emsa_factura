@@ -11,7 +11,10 @@ import java.time.LocalDate;
  * como la diferencia entre la lectura actual y la anterior del mismo medidor.
  */
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-@Entity @Table(name = "lecturas")
+@Entity
+@Table(name = "lecturas",
+        uniqueConstraints = @UniqueConstraint(name = "uk_lectura_medidor_fecha",
+                columnNames = {"id_medidor", "fecha"}))
 public class Lectura {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
