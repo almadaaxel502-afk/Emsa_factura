@@ -6,9 +6,9 @@ import ar.com.itec1misiones.emsa.dto.ItemConsumoDTO;
 import ar.com.itec1misiones.emsa.dto.ItemImpuestoDTO;
 import ar.com.itec1misiones.emsa.dto.LecturaDTO;
 import ar.com.itec1misiones.emsa.dto.PeriodoFacturacionDTO;
-import ar.com.itec1misiones.emsa.service.ClienteService;
+import ar.com.itec1misiones.emsa.service.impl.ClienteServiceImpl;
 import ar.com.itec1misiones.emsa.service.FacturacionService;
-import ar.com.itec1misiones.emsa.service.LecturaService;
+import ar.com.itec1misiones.emsa.service.impl.LecturaServiceImpl;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -62,16 +62,16 @@ public class FacturacionViewController {
     @FXML private TableColumn<ItemImpuestoDTO, Double> colTasa;
     @FXML private TableColumn<ItemImpuestoDTO, Double> colImporte;
 
-    private final ClienteService clienteService;
+    private final ClienteServiceImpl clienteServiceImpl;
     private final FacturacionService facturacionService;
-    private final LecturaService lecturaService;
+    private final LecturaServiceImpl lecturaServiceImpl;
 
-    public FacturacionViewController(ClienteService clienteService,
+    public FacturacionViewController(ClienteServiceImpl clienteServiceImpl,
                                      FacturacionService facturacionService,
-                                     LecturaService lecturaService) {
-        this.clienteService = clienteService;
+                                     LecturaServiceImpl lecturaServiceImpl) {
+        this.clienteServiceImpl = clienteServiceImpl;
         this.facturacionService = facturacionService;
-        this.lecturaService = lecturaService;
+        this.lecturaServiceImpl = lecturaServiceImpl;
     }
 
     @FXML
@@ -130,7 +130,7 @@ public class FacturacionViewController {
             return;
         }
         try {
-            ClienteDTO cliente = clienteService.buscarPorNroSerieMedidor(nroSerie);
+            ClienteDTO cliente = clienteServiceImpl.buscarPorNroSerieMedidor(nroSerie);
             clienteCombo.setItems(FXCollections.observableArrayList(cliente));
             clienteCombo.setValue(cliente);
             clienteCombo.getEditor().setText(cliente.toString());
@@ -150,7 +150,7 @@ public class FacturacionViewController {
         }
         try {
             BigDecimal valor = new BigDecimal(lecturaField.getText().trim());
-            LecturaDTO lectura = lecturaService.registrarLecturaDto(nroSerie, fechaPicker.getValue(), valor);
+            LecturaDTO lectura = lecturaServiceImpl.registrarLecturaDto(nroSerie, fechaPicker.getValue(), valor);
             mensaje("Lectura registrada: " + lectura.getValor() + " kWh.", false);
             refrescarPeriodo();
         } catch (NumberFormatException e) {
@@ -181,7 +181,7 @@ public class FacturacionViewController {
     }
 
     private void filtrarClientes(String texto) {
-        List<ClienteDTO> filtrados = new ArrayList<>(clienteService.buscarPorNombre(texto));
+        List<ClienteDTO> filtrados = new ArrayList<>(clienteServiceImpl.buscarPorNombre(texto));
         ClienteDTO seleccionado = clienteCombo.getValue();
         if (seleccionado != null
                 && filtrados.stream().noneMatch(c -> c.getId().equals(seleccionado.getId()))) {
@@ -192,7 +192,7 @@ public class FacturacionViewController {
     }
 
     private void recargarClientes() {
-        clienteCombo.setItems(FXCollections.observableArrayList(clienteService.findAll()));
+        clienteCombo.setItems(FXCollections.observableArrayList(clienteServiceImpl.findAll()));
     }
 
     private void recargarFacturas() {

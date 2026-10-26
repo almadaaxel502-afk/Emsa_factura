@@ -1,4 +1,4 @@
-package ar.com.itec1misiones.emsa.service;
+package ar.com.itec1misiones.emsa.service.impl;
 
 import ar.com.itec1misiones.emsa.dto.MedidorDTO;
 import ar.com.itec1misiones.emsa.entity.Medidor;
@@ -11,11 +11,11 @@ import java.util.Optional;
 
 /** Logica de negocio de medidores. */
 @Service
-public class MedidorService {
+public class MedidorServiceImpl {
 
     private final MedidorRepository medidores;
 
-    public MedidorService(MedidorRepository medidores) {
+    public MedidorServiceImpl(MedidorRepository medidores) {
         this.medidores = medidores;
     }
 

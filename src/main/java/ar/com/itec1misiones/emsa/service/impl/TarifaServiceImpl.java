@@ -1,4 +1,4 @@
-package ar.com.itec1misiones.emsa.service;
+package ar.com.itec1misiones.emsa.service.impl;
 
 import ar.com.itec1misiones.emsa.dto.TarifaDTO;
 import ar.com.itec1misiones.emsa.entity.Tarifa;
@@ -11,11 +11,11 @@ import java.util.List;
 
 /** Catalogo de tarifas por bloque (precios de la liquidacion). */
 @Service
-public class TarifaService {
+public class TarifaServiceImpl {
 
     private final TarifaRepository tarifas;
 
-    public TarifaService(TarifaRepository tarifas) {
+    public TarifaServiceImpl(TarifaRepository tarifas) {
         this.tarifas = tarifas;
     }
 

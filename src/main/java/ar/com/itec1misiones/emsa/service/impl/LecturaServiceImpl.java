@@ -1,4 +1,4 @@
-package ar.com.itec1misiones.emsa.service;
+package ar.com.itec1misiones.emsa.service.impl;
 
 import ar.com.itec1misiones.emsa.dto.LecturaDTO;
 import ar.com.itec1misiones.emsa.entity.Lectura;
@@ -17,19 +17,19 @@ import java.util.Optional;
  * el service calcula el consumo del periodo (diferencia con la lectura anterior).
  */
 @Service
-public class LecturaService {
+public class LecturaServiceImpl {
 
     private final LecturaRepository lecturas;
-    private final MedidorService medidorService;
+    private final MedidorServiceImpl medidorServiceImpl;
 
-    public LecturaService(LecturaRepository lecturas, MedidorService medidorService) {
+    public LecturaServiceImpl(LecturaRepository lecturas, MedidorServiceImpl medidorServiceImpl) {
         this.lecturas = lecturas;
-        this.medidorService = medidorService;
+        this.medidorServiceImpl = medidorServiceImpl;
     }
 
     @Transactional
     public Lectura registrarLectura(String nroSerie, LocalDate fecha, BigDecimal valor) {
-        Medidor medidor = medidorService.obtenerPorNroSerie(nroSerie);
+        Medidor medidor = medidorServiceImpl.obtenerPorNroSerie(nroSerie);
         if (fecha == null) {
             throw new IllegalArgumentException("Indique la fecha de la lectura.");
         }

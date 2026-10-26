@@ -1,10 +1,10 @@
 package ar.com.itec1misiones.emsa;
 
-import ar.com.itec1misiones.emsa.service.ClienteService;
+import ar.com.itec1misiones.emsa.service.impl.ClienteServiceImpl;
 import ar.com.itec1misiones.emsa.service.FacturacionService;
-import ar.com.itec1misiones.emsa.service.LecturaService;
-import ar.com.itec1misiones.emsa.service.LoginService;
-import ar.com.itec1misiones.emsa.service.UsuarioService;
+import ar.com.itec1misiones.emsa.service.impl.LecturaServiceImpl;
+import ar.com.itec1misiones.emsa.service.impl.LoginServiceImpl;
+import ar.com.itec1misiones.emsa.service.impl.UsuarioServiceImpl;
 import ar.com.itec1misiones.emsa.view.controller.FacturacionViewController;
 import ar.com.itec1misiones.emsa.view.controller.InicioController;
 import ar.com.itec1misiones.emsa.view.controller.LoginController;
@@ -36,18 +36,18 @@ public class FxmlLoadTest {
         FXMLLoader facturacion = new FXMLLoader(
                 getClass().getClassLoader().getResource("view/facturacion.fxml"));
         facturacion.setControllerFactory(clazz -> new FacturacionViewController(
-                mock(ClienteService.class), mock(FacturacionService.class), mock(LecturaService.class)));
+                mock(ClienteServiceImpl.class), mock(FacturacionService.class), mock(LecturaServiceImpl.class)));
         Parent vistaFacturacion = facturacion.load();
         assertNotNull(vistaFacturacion);
 
         FXMLLoader usuarios = new FXMLLoader(
                 getClass().getClassLoader().getResource("view/usuarios.fxml"));
-        usuarios.setControllerFactory(clazz -> new UsuarioViewController(mock(UsuarioService.class)));
+        usuarios.setControllerFactory(clazz -> new UsuarioViewController(mock(UsuarioServiceImpl.class)));
         assertNotNull(usuarios.load());
 
         FXMLLoader login = new FXMLLoader(
                 getClass().getClassLoader().getResource("view/login.fxml"));
-        login.setControllerFactory(clazz -> new LoginController(mock(LoginService.class)));
+        login.setControllerFactory(clazz -> new LoginController(mock(LoginServiceImpl.class)));
         assertNotNull(login.load());
 
         FXMLLoader inicio = new FXMLLoader(
@@ -55,7 +55,7 @@ public class FxmlLoadTest {
         org.springframework.context.ApplicationContext ctx =
                 mock(org.springframework.context.ApplicationContext.class);
         when(ctx.getBean(FacturacionViewController.class)).thenReturn(new FacturacionViewController(
-                mock(ClienteService.class), mock(FacturacionService.class), mock(LecturaService.class)));
+                mock(ClienteServiceImpl.class), mock(FacturacionService.class), mock(LecturaServiceImpl.class)));
         inicio.setControllerFactory(clazz -> new InicioController(ctx));
         assertNotNull(inicio.load());
     }

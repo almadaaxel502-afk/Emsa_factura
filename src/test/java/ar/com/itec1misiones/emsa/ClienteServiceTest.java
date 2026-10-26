@@ -6,7 +6,7 @@ import ar.com.itec1misiones.emsa.entity.Medidor;
 import ar.com.itec1misiones.emsa.entity.TipoIVA;
 import ar.com.itec1misiones.emsa.repository.ClienteRepository;
 import ar.com.itec1misiones.emsa.repository.MedidorRepository;
-import ar.com.itec1misiones.emsa.service.ClienteService;
+import ar.com.itec1misiones.emsa.service.impl.ClienteServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,7 +25,7 @@ public class ClienteServiceTest {
 
     @Mock private ClienteRepository clientes;
     @Mock private MedidorRepository medidores;
-    @InjectMocks private ClienteService clienteService;
+    @InjectMocks private ClienteServiceImpl clienteServiceImpl;
 
     private Cliente cliente() {
         Cliente cliente = new Cliente();
@@ -42,7 +42,7 @@ public class ClienteServiceTest {
     void buscaClientePorNombre() {
         when(clientes.buscarPorNombre("juan")).thenReturn(List.of(cliente()));
 
-        List<ClienteDTO> resultado = clienteService.buscarPorNombre("juan");
+        List<ClienteDTO> resultado = clienteServiceImpl.buscarPorNombre("juan");
 
         assertEquals(1, resultado.size());
         assertEquals("Juan Giron", resultado.get(0).getNombreCompleto());
@@ -57,7 +57,7 @@ public class ClienteServiceTest {
         medidor.setCliente(cliente);
         when(medidores.findByNroSerieIgnoreCase("SER-0001")).thenReturn(Optional.of(medidor));
 
-        ClienteDTO resultado = clienteService.buscarPorNroSerieMedidor("SER-0001");
+        ClienteDTO resultado = clienteServiceImpl.buscarPorNroSerieMedidor("SER-0001");
 
         assertEquals("Juan Giron", resultado.getNombreCompleto());
         assertEquals(21.0, resultado.getTipoIVATasa());
@@ -68,7 +68,7 @@ public class ClienteServiceTest {
         when(medidores.findByNroSerieIgnoreCase("SER-9999")).thenReturn(Optional.empty());
 
         assertThrows(IllegalArgumentException.class,
-                () -> clienteService.buscarPorNroSerieMedidor("SER-9999"));
+                () -> clienteServiceImpl.buscarPorNroSerieMedidor("SER-9999"));
     }
 
     @Test
@@ -79,6 +79,6 @@ public class ClienteServiceTest {
         when(medidores.findByNroSerieIgnoreCase("SER-0003")).thenReturn(Optional.of(medidor));
 
         assertThrows(IllegalArgumentException.class,
-                () -> clienteService.buscarPorNroSerieMedidor("SER-0003"));
+                () -> clienteServiceImpl.buscarPorNroSerieMedidor("SER-0003"));
     }
 }

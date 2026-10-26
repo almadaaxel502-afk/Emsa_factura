@@ -1,4 +1,4 @@
-package ar.com.itec1misiones.emsa.service;
+package ar.com.itec1misiones.emsa.service.impl;
 
 import ar.com.itec1misiones.emsa.dto.ClienteDTO;
 import ar.com.itec1misiones.emsa.entity.Cliente;
@@ -16,12 +16,12 @@ import java.util.Optional;
  * del medidor. Es la unica puerta de entrada del controller a los datos.
  */
 @Service
-public class ClienteService {
+public class ClienteServiceImpl {
 
     private final ClienteRepository clientes;
     private final MedidorRepository medidores;
 
-    public ClienteService(ClienteRepository clientes, MedidorRepository medidores) {
+    public ClienteServiceImpl(ClienteRepository clientes, MedidorRepository medidores) {
         this.clientes = clientes;
         this.medidores = medidores;
     }

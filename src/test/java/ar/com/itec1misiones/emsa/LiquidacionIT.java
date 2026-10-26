@@ -7,7 +7,7 @@ import ar.com.itec1misiones.emsa.repository.ItemConsumoRepository;
 import ar.com.itec1misiones.emsa.repository.ItemImpuestoRepository;
 import ar.com.itec1misiones.emsa.repository.MedidorRepository;
 import ar.com.itec1misiones.emsa.service.FacturacionService;
-import ar.com.itec1misiones.emsa.service.LecturaService;
+import ar.com.itec1misiones.emsa.service.impl.LecturaServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +27,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LiquidacionIT {
 
     @Autowired FacturacionService facturacion;
-    @Autowired LecturaService lecturas;
+    @Autowired
+    LecturaServiceImpl lecturas;
     @Autowired MedidorRepository medidores;
     @Autowired FacturaRepository facturas;
     @Autowired ItemConsumoRepository itemsConsumo;

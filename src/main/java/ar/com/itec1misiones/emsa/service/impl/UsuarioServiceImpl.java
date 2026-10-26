@@ -1,4 +1,4 @@
-package ar.com.itec1misiones.emsa.service;
+package ar.com.itec1misiones.emsa.service.impl;
 
 import ar.com.itec1misiones.emsa.dto.UsuarioDTO;
 import ar.com.itec1misiones.emsa.entity.Usuario;
@@ -13,11 +13,11 @@ import java.util.List;
  * y la contrasena se usa para el ingreso al sistema.
  */
 @Service
-public class UsuarioService {
+public class UsuarioServiceImpl {
 
     private final UsuarioRepository usuarios;
 
-    public UsuarioService(UsuarioRepository usuarios) {
+    public UsuarioServiceImpl(UsuarioRepository usuarios) {
         this.usuarios = usuarios;
     }
 
@@ -26,11 +26,11 @@ public class UsuarioService {
     }
 
     @Transactional(readOnly = true)
-    public List<UsuarioDTO> buscarPorNombre(String texto) {
-        if (texto == null || texto.isBlank()) {
+    public List<UsuarioDTO> buscarPorNombre(String nombre) {
+        if (nombre == null || nombre.isBlank()) {
             return findAll();
         }
-        return usuarios.findByNombreContainingIgnoreCaseOrderByIdUsuarioAsc(texto.trim())
+        return usuarios.findByNombreContainingIgnoreCaseOrderByIdUsuarioAsc(nombre.trim())
                 .stream().map(this::toDTO).toList();
     }
 

@@ -1,7 +1,7 @@
 package ar.com.itec1misiones.emsa.view.controller;
 
 import ar.com.itec1misiones.emsa.dto.UsuarioDTO;
-import ar.com.itec1misiones.emsa.service.UsuarioService;
+import ar.com.itec1misiones.emsa.service.impl.UsuarioServiceImpl;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -21,10 +21,10 @@ public class UsuarioViewController {
     @FXML private TextField buscarField;
     @FXML private Label mensajeLabel;
 
-    private final UsuarioService usuarioService;
+    private final UsuarioServiceImpl usuarioServiceImpl;
 
-    public UsuarioViewController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
+    public UsuarioViewController(UsuarioServiceImpl usuarioServiceImpl) {
+        this.usuarioServiceImpl = usuarioServiceImpl;
     }
 
     @FXML
@@ -54,7 +54,7 @@ public class UsuarioViewController {
     @FXML
     public void onBuscar() {
         try {
-            List<UsuarioDTO> encontrados = usuarioService.buscarPorNombre(buscarField.getText());
+            List<UsuarioDTO> encontrados = usuarioServiceImpl.buscarPorNombre(buscarField.getText());
             recargar(encontrados);
             if (encontrados.isEmpty()) {
                 mensaje("No se encontraron usuarios con ese nombre.", true);
@@ -77,10 +77,10 @@ public class UsuarioViewController {
         try {
             UsuarioDTO seleccionado = usuariosTable.getSelectionModel().getSelectedItem();
             if (seleccionado == null) {
-                usuarioService.create(nombreField.getText(), contrasenaField.getText());
+                usuarioServiceImpl.create(nombreField.getText(), contrasenaField.getText());
                 mensaje("Usuario creado.", false);
             } else {
-                usuarioService.update(seleccionado.getIdUsuario(), nombreField.getText(),
+                usuarioServiceImpl.update(seleccionado.getIdUsuario(), nombreField.getText(),
                         contrasenaField.getText());
                 mensaje("Usuario actualizado.", false);
             }
@@ -107,7 +107,7 @@ public class UsuarioViewController {
                 .filter(boton -> boton == ButtonType.OK)
                 .ifPresent(boton -> {
                     try {
-                        usuarioService.delete(seleccionado.getIdUsuario());
+                        usuarioServiceImpl.delete(seleccionado.getIdUsuario());
                         mensaje("Usuario eliminado.", false);
                         onNuevo();
                         recargar();
@@ -118,7 +118,7 @@ public class UsuarioViewController {
     }
 
     private void recargar() {
-        recargar(usuarioService.findAll());
+        recargar(usuarioServiceImpl.findAll());
     }
 
     private void recargar(List<UsuarioDTO> usuarios) {

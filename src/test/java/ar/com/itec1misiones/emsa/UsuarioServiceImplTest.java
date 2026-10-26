@@ -3,7 +3,7 @@ package ar.com.itec1misiones.emsa;
 import ar.com.itec1misiones.emsa.dto.UsuarioDTO;
 import ar.com.itec1misiones.emsa.entity.Usuario;
 import ar.com.itec1misiones.emsa.repository.UsuarioRepository;
-import ar.com.itec1misiones.emsa.service.UsuarioService;
+import ar.com.itec1misiones.emsa.service.impl.UsuarioServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,10 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UsuarioServiceTest {
+public class UsuarioServiceImplTest {
 
     @Mock private UsuarioRepository usuarios;
-    @InjectMocks private UsuarioService usuarioService;
+    @InjectMocks private UsuarioServiceImpl usuarioServiceImpl;
 
     @Test
     void devuelveUsuariosComoDTO() {
@@ -28,7 +28,7 @@ public class UsuarioServiceTest {
         demo.setNombre("demo");
         when(usuarios.findAll()).thenReturn(List.of(demo));
 
-        List<UsuarioDTO> lista = usuarioService.findAll();
+        List<UsuarioDTO> lista = usuarioServiceImpl.findAll();
 
         assertEquals(1, lista.size());
         assertEquals(3L, lista.get(0).getIdUsuario());
@@ -43,7 +43,7 @@ public class UsuarioServiceTest {
         when(usuarios.findByNombreContainingIgnoreCaseOrderByIdUsuarioAsc("de"))
                 .thenReturn(List.of(demo));
 
-        List<UsuarioDTO> lista = usuarioService.buscarPorNombre(" de ");
+        List<UsuarioDTO> lista = usuarioServiceImpl.buscarPorNombre(" de ");
 
         assertEquals(1, lista.size());
         assertEquals("demo", lista.get(0).getNombre());

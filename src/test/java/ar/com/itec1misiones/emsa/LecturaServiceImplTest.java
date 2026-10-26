@@ -4,8 +4,8 @@ import ar.com.itec1misiones.emsa.dto.LecturaDTO;
 import ar.com.itec1misiones.emsa.entity.Lectura;
 import ar.com.itec1misiones.emsa.entity.Medidor;
 import ar.com.itec1misiones.emsa.repository.LecturaRepository;
-import ar.com.itec1misiones.emsa.service.LecturaService;
-import ar.com.itec1misiones.emsa.service.MedidorService;
+import ar.com.itec1misiones.emsa.service.impl.LecturaServiceImpl;
+import ar.com.itec1misiones.emsa.service.impl.MedidorServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,11 +21,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class LecturaServiceTest {
+public class LecturaServiceImplTest {
 
     @Mock private LecturaRepository lecturas;
-    @Mock private MedidorService medidorService;
-    @InjectMocks private LecturaService lecturaService;
+    @Mock private MedidorServiceImpl medidorServiceImpl;
+    @InjectMocks private LecturaServiceImpl lecturaServiceImpl;
 
     private Medidor medidor() {
         Medidor medidor = new Medidor();
@@ -48,11 +48,11 @@ public class LecturaServiceTest {
     @Test
     void registraLaLecturaDelOperador() {
         Medidor medidor = medidor();
-        when(medidorService.obtenerPorNroSerie("SER-0001")).thenReturn(medidor);
+        when(medidorServiceImpl.obtenerPorNroSerie("SER-0001")).thenReturn(medidor);
         when(lecturas.findByMedidor(1L)).thenReturn(List.of());
         when(lecturas.save(any(Lectura.class))).thenAnswer(i -> i.getArgument(0));
 
-        Lectura guardada = lecturaService.registrarLectura("SER-0001", LocalDate.now(), new BigDecimal("1290"));
+        Lectura guardada = lecturaServiceImpl.registrarLectura("SER-0001", LocalDate.now(), new BigDecimal("1290"));
 
         assertEquals(0, new BigDecimal("1290").compareTo(guardada.getValor()));
         assertEquals(medidor, guardada.getMedidor());
@@ -61,11 +61,11 @@ public class LecturaServiceTest {
     @Test
     void registraLaLecturaYDevuelveSuDTO() {
         Medidor medidor = medidor();
-        when(medidorService.obtenerPorNroSerie("SER-0001")).thenReturn(medidor);
+        when(medidorServiceImpl.obtenerPorNroSerie("SER-0001")).thenReturn(medidor);
         when(lecturas.findByMedidor(1L)).thenReturn(List.of());
         when(lecturas.save(any(Lectura.class))).thenAnswer(i -> i.getArgument(0));
 
-        LecturaDTO dto = lecturaService.registrarLecturaDto("SER-0001", LocalDate.now(), new BigDecimal("1290"));
+        LecturaDTO dto = lecturaServiceImpl.registrarLecturaDto("SER-0001", LocalDate.now(), new BigDecimal("1290"));
 
         assertEquals(0, BigDecimal.valueOf(dto.getValor()).compareTo(new BigDecimal("1290")));
         assertEquals("SER-0001", dto.getMedidorNroSerie());
@@ -74,33 +74,33 @@ public class LecturaServiceTest {
     @Test
     void rechazaLecturaMenorALaUltimaRegistrada() {
         Medidor medidor = medidor();
-        when(medidorService.obtenerPorNroSerie("SER-0001")).thenReturn(medidor);
+        when(medidorServiceImpl.obtenerPorNroSerie("SER-0001")).thenReturn(medidor);
         when(lecturas.findByMedidor(1L)).thenReturn(List.of(
                 lectura(2L, medidor, LocalDate.now().minusDays(5), "1290")));
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () ->
-                lecturaService.registrarLectura("SER-0001", LocalDate.now(), new BigDecimal("1200")));
+                lecturaServiceImpl.registrarLectura("SER-0001", LocalDate.now(), new BigDecimal("1200")));
         assertTrue(e.getMessage().contains("no puede ser menor"));
     }
 
     @Test
     void rechazaLecturaRepetida() {
         Medidor medidor = medidor();
-        when(medidorService.obtenerPorNroSerie("SER-0001")).thenReturn(medidor);
+        when(medidorServiceImpl.obtenerPorNroSerie("SER-0001")).thenReturn(medidor);
         when(lecturas.findByMedidor(1L)).thenReturn(List.of(
                 lectura(2L, medidor, LocalDate.now().minusDays(5), "1290")));
 
         assertThrows(IllegalArgumentException.class, () ->
-                lecturaService.registrarLectura("SER-0001", LocalDate.now(), new BigDecimal("1290")));
+                lecturaServiceImpl.registrarLectura("SER-0001", LocalDate.now(), new BigDecimal("1290")));
     }
 
     @Test
     void rechazaLecturaNegativa() {
         Medidor medidor = medidor();
-        when(medidorService.obtenerPorNroSerie("SER-0001")).thenReturn(medidor);
+        when(medidorServiceImpl.obtenerPorNroSerie("SER-0001")).thenReturn(medidor);
 
         assertThrows(IllegalArgumentException.class, () ->
-                lecturaService.registrarLectura("SER-0001", LocalDate.now(), new BigDecimal("-1")));
+                lecturaServiceImpl.registrarLectura("SER-0001", LocalDate.now(), new BigDecimal("-1")));
     }
 
     @Test
@@ -110,7 +110,7 @@ public class LecturaServiceTest {
         Lectura anterior = lectura(1L, medidor, LocalDate.now().minusDays(40), "1200");
         when(lecturas.findByMedidor(1L)).thenReturn(List.of(actual, anterior));
 
-        BigDecimal consumo = lecturaService.calcularConsumo(actual);
+        BigDecimal consumo = lecturaServiceImpl.calcularConsumo(actual);
 
         assertEquals(0, new BigDecimal("90").compareTo(consumo));
     }
@@ -121,7 +121,7 @@ public class LecturaServiceTest {
         Lectura primera = lectura(1L, medidor, LocalDate.now().minusDays(40), "1200");
         when(lecturas.findByMedidor(1L)).thenReturn(List.of(primera));
 
-        BigDecimal consumo = lecturaService.calcularConsumo(primera);
+        BigDecimal consumo = lecturaServiceImpl.calcularConsumo(primera);
 
         assertEquals(0, new BigDecimal("1200").compareTo(consumo));
     }

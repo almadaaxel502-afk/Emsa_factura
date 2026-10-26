@@ -1,6 +1,6 @@
 package ar.com.itec1misiones.emsa.view.controller;
 
-import ar.com.itec1misiones.emsa.service.LoginService;
+import ar.com.itec1misiones.emsa.service.impl.LoginServiceImpl;
 import ar.com.itec1misiones.emsa.view.EmsaFxApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -18,10 +18,10 @@ public class LoginController {
     @FXML
     private Label mensajeLabel;
 
-    private final LoginService loginService;
+    private final LoginServiceImpl loginServiceImpl;
 
-    public LoginController(LoginService loginService) {
-        this.loginService = loginService;
+    public LoginController(LoginServiceImpl loginServiceImpl) {
+        this.loginServiceImpl = loginServiceImpl;
     }
 
     @FXML
@@ -31,7 +31,7 @@ public class LoginController {
 
     @FXML
     public void onLogin() {
-        boolean ok = loginService.autenticar(usuarioField.getText(), passwordField.getText());
+        boolean ok = loginServiceImpl.autenticar(usuarioField.getText(), passwordField.getText());
         if (ok) {
             EmsaFxApp.showScene("view/inicio.fxml", "EMSA | Energía de Misiones - Facturación");
         } else {

@@ -1,4 +1,4 @@
-package ar.com.itec1misiones.emsa.service;
+package ar.com.itec1misiones.emsa.service.impl;
 
 import ar.com.itec1misiones.emsa.entity.Operador;
 import ar.com.itec1misiones.emsa.repository.OperadorRepository;
@@ -9,11 +9,11 @@ import java.util.Optional;
 
 /** Ingreso al sistema: solo los Operadores (heredan de Usuario) pueden autenticarse. */
 @Service
-public class LoginService {
+public class LoginServiceImpl {
 
     private final OperadorRepository operadores;
 
-    public LoginService(OperadorRepository operadores) {
+    public LoginServiceImpl(OperadorRepository operadores) {
         this.operadores = operadores;
     }
 

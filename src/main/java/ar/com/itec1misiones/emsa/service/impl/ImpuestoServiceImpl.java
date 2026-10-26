@@ -1,4 +1,4 @@
-package ar.com.itec1misiones.emsa.service;
+package ar.com.itec1misiones.emsa.service.impl;
 
 import ar.com.itec1misiones.emsa.dto.ImpuestoDTO;
 import ar.com.itec1misiones.emsa.entity.Impuesto;
@@ -11,11 +11,11 @@ import java.util.List;
 
 /** Catalogo de impuestos. */
 @Service
-public class ImpuestoService {
+public class ImpuestoServiceImpl {
 
     private final ImpuestoRepository impuestos;
 
-    public ImpuestoService(ImpuestoRepository impuestos) {
+    public ImpuestoServiceImpl(ImpuestoRepository impuestos) {
         this.impuestos = impuestos;
     }
 

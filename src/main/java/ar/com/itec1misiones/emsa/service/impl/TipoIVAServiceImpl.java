@@ -1,4 +1,4 @@
-package ar.com.itec1misiones.emsa.service;
+package ar.com.itec1misiones.emsa.service.impl;
 
 import ar.com.itec1misiones.emsa.dto.TipoIVADTO;
 import ar.com.itec1misiones.emsa.entity.TipoIVA;
@@ -11,11 +11,11 @@ import java.util.List;
 
 /** Catalogo de tipos de IVA (consumidor final 21%, comercio registrado 10,5%). */
 @Service
-public class TipoIVAService {
+public class TipoIVAServiceImpl {
 
     private final TipoIVARepository tiposIVA;
 
-    public TipoIVAService(TipoIVARepository tiposIVA) {
+    public TipoIVAServiceImpl(TipoIVARepository tiposIVA) {
         this.tiposIVA = tiposIVA;
     }
 

@@ -20,8 +20,6 @@ import ar.com.itec1misiones.emsa.repository.ItemConsumoRepository;
 import ar.com.itec1misiones.emsa.repository.ItemImpuestoRepository;
 import ar.com.itec1misiones.emsa.repository.TarifaRepository;
 import ar.com.itec1misiones.emsa.service.FacturacionService;
-import ar.com.itec1misiones.emsa.service.LecturaService;
-import ar.com.itec1misiones.emsa.service.MedidorService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,20 +49,20 @@ public class FacturacionServiceImpl implements FacturacionService {
     public static final BigDecimal PRECIO_BLOQUE_2_DEF = new BigDecimal("79");
     public static final BigDecimal PRECIO_EXCEDENTE_DEF = new BigDecimal("79");
 
-    private final MedidorService medidorService;
-    private final LecturaService lecturaService;
+    private final MedidorServiceImpl medidorServiceImpl;
+    private final LecturaServiceImpl lecturaServiceImpl;
     private final FacturaRepository facturas;
     private final ItemConsumoRepository itemsConsumo;
     private final ItemImpuestoRepository itemsImpuesto;
     private final TarifaRepository tarifas;
     private final ImpuestoRepository impuestos;
 
-    public FacturacionServiceImpl(MedidorService medidorService, LecturaService lecturaService,
+    public FacturacionServiceImpl(MedidorServiceImpl medidorServiceImpl, LecturaServiceImpl lecturaServiceImpl,
                                   FacturaRepository facturas, ItemConsumoRepository itemsConsumo,
                                   ItemImpuestoRepository itemsImpuesto, TarifaRepository tarifas,
                                   ImpuestoRepository impuestos) {
-        this.medidorService = medidorService;
-        this.lecturaService = lecturaService;
+        this.medidorServiceImpl = medidorServiceImpl;
+        this.lecturaServiceImpl = lecturaServiceImpl;
         this.facturas = facturas;
         this.itemsConsumo = itemsConsumo;
         this.itemsImpuesto = itemsImpuesto;
@@ -107,16 +105,16 @@ public class FacturacionServiceImpl implements FacturacionService {
     @Override
     @Transactional
     public FacturaDTO liquidarPorLectura(String nroSerie, LocalDate fecha, BigDecimal valor) {
-        Medidor medidor = medidorService.obtenerPorNroSerie(nroSerie);
-        Lectura lectura = lecturaService.registrarLectura(medidor.getNroSerie(), fecha, valor);
+        Medidor medidor = medidorServiceImpl.obtenerPorNroSerie(nroSerie);
+        Lectura lectura = lecturaServiceImpl.registrarLectura(medidor.getNroSerie(), fecha, valor);
         return liquidar(medidor, lectura);
     }
 
     @Override
     @Transactional
     public FacturaDTO liquidarUltimaLectura(String nroSerie) {
-        Medidor medidor = medidorService.obtenerPorNroSerie(nroSerie);
-        Lectura lectura = lecturaService.ultimaLectura(medidor.getIdMedidor())
+        Medidor medidor = medidorServiceImpl.obtenerPorNroSerie(nroSerie);
+        Lectura lectura = lecturaServiceImpl.ultimaLectura(medidor.getIdMedidor())
                 .orElseThrow(() -> new IllegalArgumentException(
                         "El medidor " + nroSerie + " no tiene lecturas registradas."));
         return liquidar(medidor, lectura);
@@ -133,7 +131,7 @@ public class FacturacionServiceImpl implements FacturacionService {
             throw new IllegalArgumentException("Ya existe una factura emitida para la lectura del "
                     + lectura.getFecha() + ".");
         }
-        BigDecimal consumo = lecturaService.calcularConsumo(lectura);
+        BigDecimal consumo = lecturaServiceImpl.calcularConsumo(lectura);
         if (consumo == null || consumo.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException(
                     "No hay consumo nuevo para facturar: la lectura no supera a la anterior.");
@@ -195,7 +193,7 @@ public class FacturacionServiceImpl implements FacturacionService {
     @Override
     @Transactional(readOnly = true)
     public PeriodoFacturacionDTO consultarPeriodo(String nroSerie) {
-        Medidor medidor = medidorService.obtenerPorNroSerie(nroSerie);
+        Medidor medidor = medidorServiceImpl.obtenerPorNroSerie(nroSerie);
         PeriodoFacturacionDTO dto = new PeriodoFacturacionDTO();
         dto.setMedidorId(medidor.getIdMedidor());
         dto.setMedidorNroSerie(medidor.getNroSerie());
@@ -209,12 +207,12 @@ public class FacturacionServiceImpl implements FacturacionService {
                         ? cliente.getTipoIVA().getTasa().doubleValue() : 0);
             }
         }
-        Optional<Lectura> actual = lecturaService.ultimaLectura(medidor.getIdMedidor());
-        Optional<Lectura> anterior = lecturaService.lecturaAnterior(medidor.getIdMedidor());
+        Optional<Lectura> actual = lecturaServiceImpl.ultimaLectura(medidor.getIdMedidor());
+        Optional<Lectura> anterior = lecturaServiceImpl.lecturaAnterior(medidor.getIdMedidor());
         dto.setLecturaActual(actual.map(this::toDTO).orElse(null));
         dto.setLecturaAnterior(anterior.map(this::toDTO).orElse(null));
         dto.setPrimeraLiquidacion(anterior.isEmpty());
-        dto.setKwhPeriodo(actual.isEmpty() ? 0 : lecturaService.calcularConsumo(actual.get()).doubleValue());
+        dto.setKwhPeriodo(actual.isEmpty() ? 0 : lecturaServiceImpl.calcularConsumo(actual.get()).doubleValue());
         return dto;
     }
 
