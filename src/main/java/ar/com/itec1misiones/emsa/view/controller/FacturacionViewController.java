@@ -1,5 +1,6 @@
 package ar.com.itec1misiones.emsa.view.controller;
 
+import ar.com.itec1misiones.emsa.controller.ClienteController;
 import ar.com.itec1misiones.emsa.dto.ClienteDTO;
 import ar.com.itec1misiones.emsa.dto.FacturaDTO;
 import ar.com.itec1misiones.emsa.dto.ItemConsumoDTO;
@@ -62,14 +63,14 @@ public class FacturacionViewController {
     @FXML private TableColumn<ItemImpuestoDTO, Double> colTasa;
     @FXML private TableColumn<ItemImpuestoDTO, Double> colImporte;
 
-    private final ClienteServiceImpl clienteServiceImpl;
+    private final ClienteController clienteController;
     private final FacturacionService facturacionService;
     private final LecturaServiceImpl lecturaServiceImpl;
 
-    public FacturacionViewController(ClienteServiceImpl clienteServiceImpl,
+    public FacturacionViewController(ClienteController clienteController,
                                      FacturacionService facturacionService,
                                      LecturaServiceImpl lecturaServiceImpl) {
-        this.clienteServiceImpl = clienteServiceImpl;
+        this.clienteController = clienteController;
         this.facturacionService = facturacionService;
         this.lecturaServiceImpl = lecturaServiceImpl;
     }
@@ -130,7 +131,7 @@ public class FacturacionViewController {
             return;
         }
         try {
-            ClienteDTO cliente = clienteServiceImpl.buscarPorNroSerieMedidor(nroSerie);
+            ClienteDTO cliente = clienteController.buscarPorNroSerieMedidor(nroSerie);
             clienteCombo.setItems(FXCollections.observableArrayList(cliente));
             clienteCombo.setValue(cliente);
             clienteCombo.getEditor().setText(cliente.toString());
@@ -181,7 +182,7 @@ public class FacturacionViewController {
     }
 
     private void filtrarClientes(String texto) {
-        List<ClienteDTO> filtrados = new ArrayList<>(clienteServiceImpl.buscarPorNombre(texto));
+        List<ClienteDTO> filtrados = new ArrayList<>(clienteController.buscarPorNombre(texto));
         ClienteDTO seleccionado = clienteCombo.getValue();
         if (seleccionado != null
                 && filtrados.stream().noneMatch(c -> c.getId().equals(seleccionado.getId()))) {
@@ -192,7 +193,7 @@ public class FacturacionViewController {
     }
 
     private void recargarClientes() {
-        clienteCombo.setItems(FXCollections.observableArrayList(clienteServiceImpl.findAll()));
+        clienteCombo.setItems(FXCollections.observableArrayList(clienteController.findAll()));
     }
 
     private void recargarFacturas() {

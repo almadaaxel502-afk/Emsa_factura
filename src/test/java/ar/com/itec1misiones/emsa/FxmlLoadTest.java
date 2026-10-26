@@ -1,5 +1,6 @@
 package ar.com.itec1misiones.emsa;
 
+import ar.com.itec1misiones.emsa.controller.ClienteController;
 import ar.com.itec1misiones.emsa.service.impl.ClienteServiceImpl;
 import ar.com.itec1misiones.emsa.service.FacturacionService;
 import ar.com.itec1misiones.emsa.service.impl.LecturaServiceImpl;
@@ -36,7 +37,7 @@ public class FxmlLoadTest {
         FXMLLoader facturacion = new FXMLLoader(
                 getClass().getClassLoader().getResource("view/facturacion.fxml"));
         facturacion.setControllerFactory(clazz -> new FacturacionViewController(
-                mock(ClienteServiceImpl.class), mock(FacturacionService.class), mock(LecturaServiceImpl.class)));
+                mock(ClienteController.class), mock(FacturacionService.class), mock(LecturaServiceImpl.class)));
         Parent vistaFacturacion = facturacion.load();
         assertNotNull(vistaFacturacion);
 
@@ -55,7 +56,7 @@ public class FxmlLoadTest {
         org.springframework.context.ApplicationContext ctx =
                 mock(org.springframework.context.ApplicationContext.class);
         when(ctx.getBean(FacturacionViewController.class)).thenReturn(new FacturacionViewController(
-                mock(ClienteServiceImpl.class), mock(FacturacionService.class), mock(LecturaServiceImpl.class)));
+                mock(ClienteController.class), mock(FacturacionService.class), mock(LecturaServiceImpl.class)));
         inicio.setControllerFactory(clazz -> new InicioController(ctx));
         assertNotNull(inicio.load());
     }
