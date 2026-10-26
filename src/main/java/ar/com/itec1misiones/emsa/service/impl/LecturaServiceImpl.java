@@ -4,6 +4,7 @@ import ar.com.itec1misiones.emsa.dto.LecturaDTO;
 import ar.com.itec1misiones.emsa.entity.Lectura;
 import ar.com.itec1misiones.emsa.entity.Medidor;
 import ar.com.itec1misiones.emsa.repository.LecturaRepository;
+import ar.com.itec1misiones.emsa.service.LecturaService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +18,7 @@ import java.util.Optional;
  * el service calcula el consumo del periodo (diferencia con la lectura anterior).
  */
 @Service
-public class LecturaServiceImpl {
+public class LecturaServiceImpl implements LecturaService {
 
     private final LecturaRepository lecturas;
     private final MedidorServiceImpl medidorServiceImpl;
@@ -26,7 +27,7 @@ public class LecturaServiceImpl {
         this.lecturas = lecturas;
         this.medidorServiceImpl = medidorServiceImpl;
     }
-
+    @Override
     @Transactional
     public Lectura registrarLectura(String nroSerie, LocalDate fecha, BigDecimal valor) {
         Medidor medidor = medidorServiceImpl.obtenerPorNroSerie(nroSerie);
@@ -58,12 +59,14 @@ public class LecturaServiceImpl {
     }
 
     /** Registra la lectura y devuelve su DTO (punto de entrada de la vista). */
+    @Override
     @Transactional
     public LecturaDTO registrarLecturaDto(String nroSerie, LocalDate fecha, BigDecimal valor) {
         return toDTO(registrarLectura(nroSerie, fecha, valor));
     }
 
     /** Mapea la entidad Lectura a su DTO de presentacion. */
+    @Override
     public LecturaDTO toDTO(Lectura lectura) {
         LecturaDTO dto = new LecturaDTO();
         dto.setId(lectura.getIdLectura());
@@ -76,17 +79,20 @@ public class LecturaServiceImpl {
         return dto;
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<Lectura> listarPorMedidor(Long idMedidor) {
         return lecturas.findByMedidor(idMedidor);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Optional<Lectura> ultimaLectura(Long idMedidor) {
         List<Lectura> historial = lecturas.findByMedidor(idMedidor);
         return historial.isEmpty() ? Optional.empty() : Optional.of(historial.get(0));
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Optional<Lectura> lecturaAnterior(Long idMedidor) {
         List<Lectura> historial = lecturas.findByMedidor(idMedidor);
@@ -97,6 +103,7 @@ public class LecturaServiceImpl {
      * Consumo del periodo de la lectura dada: lectura actual menos la anterior.
      * Si no hay lectura anterior (primer registro) se factura la lectura completa.
      */
+    @Override
     @Transactional(readOnly = true)
     public BigDecimal calcularConsumo(Lectura lectura) {
         List<Lectura> historial = lecturas.findByMedidor(lectura.getMedidor().getIdMedidor());
@@ -114,6 +121,7 @@ public class LecturaServiceImpl {
     }
 
     /** Consumo del ultimo periodo registrado del medidor (0 si no hay lecturas). */
+    @Override
     @Transactional(readOnly = true)
     public BigDecimal consumoUltimoPeriodo(Long idMedidor) {
         return ultimaLectura(idMedidor)

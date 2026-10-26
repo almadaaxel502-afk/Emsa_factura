@@ -2,6 +2,7 @@ package ar.com.itec1misiones.emsa.service.impl;
 
 import ar.com.itec1misiones.emsa.entity.Operador;
 import ar.com.itec1misiones.emsa.repository.OperadorRepository;
+import ar.com.itec1misiones.emsa.service.LoginService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,7 +10,7 @@ import java.util.Optional;
 
 /** Ingreso al sistema: solo los Operadores (heredan de Usuario) pueden autenticarse. */
 @Service
-public class LoginServiceImpl {
+public class LoginServiceImpl implements LoginService {
 
     private final OperadorRepository operadores;
 
@@ -17,6 +18,7 @@ public class LoginServiceImpl {
         this.operadores = operadores;
     }
 
+    @Override
     @Transactional(readOnly = true)
     public boolean autenticar(String nombre, String contrasena) {
         if (nombre == null || nombre.isBlank()) {

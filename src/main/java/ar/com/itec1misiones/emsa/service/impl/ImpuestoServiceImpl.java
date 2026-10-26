@@ -3,15 +3,18 @@ package ar.com.itec1misiones.emsa.service.impl;
 import ar.com.itec1misiones.emsa.dto.ImpuestoDTO;
 import ar.com.itec1misiones.emsa.entity.Impuesto;
 import ar.com.itec1misiones.emsa.repository.ImpuestoRepository;
+import ar.com.itec1misiones.emsa.service.ImpuestoService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-/** Catalogo de impuestos. */
+/**
+ * Catalogo de impuestos.
+ */
 @Service
-public class ImpuestoServiceImpl {
+public class ImpuestoServiceImpl implements ImpuestoService {
 
     private final ImpuestoRepository impuestos;
 
@@ -19,11 +22,13 @@ public class ImpuestoServiceImpl {
         this.impuestos = impuestos;
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<ImpuestoDTO> findAll() {
         return impuestos.findAll().stream().map(this::toDTO).toList();
     }
 
+    @Override
     @Transactional
     public ImpuestoDTO create(String descripcion, BigDecimal tasa) {
         validar(descripcion, tasa);
@@ -33,13 +38,6 @@ public class ImpuestoServiceImpl {
         return toDTO(impuestos.save(impuesto));
     }
 
-    @Transactional
-    public void delete(Long id) {
-        if (!impuestos.existsById(id)) {
-            throw new IllegalArgumentException("No existe el impuesto con id " + id);
-        }
-        impuestos.deleteById(id);
-    }
 
     private void validar(String descripcion, BigDecimal tasa) {
         if (descripcion == null || descripcion.trim().isEmpty()) {
